@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class HelloWorldManager : MonoBehaviour
+using MLAPI;
+public class TestScript : NetworkBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Hello World");
+        
     }
 
     // Update is called once per frame

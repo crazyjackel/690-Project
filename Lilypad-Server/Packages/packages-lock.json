@@ -1,10 +1,12 @@
 {
   "dependencies": {
-    "com.lilypad.shared": {
-      "version": "file:C:/Users/Jack/Documents/690/690-Project/Lilypad-Client/Assets/Shared",
+    "com.690tech.lilypad-shared": {
+      "version": "file:C:/Users/Jack/Documents/690/690-Project/Shared",
       "depth": 0,
       "source": "local",
-      "dependencies": {}
+      "dependencies": {
+        "com.unity.multiplayer.mlapi": "0.1.0"
+      }
     },
     "com.unity.addressables": {
       "version": "1.18.15",

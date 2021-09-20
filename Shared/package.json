@@ -1,0 +1,16 @@
+{
+  "name": "com.690tech.lilypad-shared",
+  "displayName": "Lilypad Shared Assets",
+  "version": "0.0.1",
+  "unity": "2020.3",
+  "description": "A Shared Repository of Assets used for Multiple Projects.",
+  "keywords": [
+    "Lilypad",
+    "unity"
+  ],
+  "category": "Unity",
+  "type": "library",
+  "dependencies": {
+    "com.unity.multiplayer.mlapi": "0.1.0"
+  }
+}
