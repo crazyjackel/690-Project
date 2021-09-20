@@ -269,11 +269,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7690652853640920711, guid: e45edd5439df11349997f1383b7bcb5c, type: 3}
       propertyPath: NetworkConfig.RegisteredScenes.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7690652853640920711, guid: e45edd5439df11349997f1383b7bcb5c, type: 3}
       propertyPath: NetworkConfig.RegisteredScenes.Array.data[0]
-      value: Server
+      value: Client
       objectReference: {fileID: 0}
     - target: {fileID: 7690652853640920711, guid: e45edd5439df11349997f1383b7bcb5c, type: 3}
       propertyPath: NetworkConfig.RegisteredScenes.Array.data[1]
