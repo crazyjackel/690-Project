@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
 
-public class Server : MonoBehaviour
+public class Startup : MonoBehaviour
 {
     void Start()
     {
