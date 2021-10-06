@@ -1,0 +1,15 @@
+{
+  "name": "com.690tech.enjin-sdk",
+  "displayName": "Enjin SDK",
+  "version": "0.0.1",
+  "unity": "2020.3",
+  "description": "SDK for Unity",
+  "keywords": [
+    "Enjin",
+    "unity"
+  ],
+  "category": "Unity",
+  "type": "library",
+  "dependencies": {
+  }
+}

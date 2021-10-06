@@ -37,7 +37,7 @@ public class ClientNetworkPortal : MonoBehaviour
 
     public void Connect()
     {
-        var Validation = "Valid";
+        var Validation = "Valid2";
         byte[] payload = Encoding.UTF8.GetBytes(Validation);
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = payload;
