@@ -1,0 +1,3 @@
+[submodule "enjin-csharp-sdk"]
+	path = enjin-csharp-sdk
+	url = https://github.com/crazyjackel/enjin-csharp-sdk.git
