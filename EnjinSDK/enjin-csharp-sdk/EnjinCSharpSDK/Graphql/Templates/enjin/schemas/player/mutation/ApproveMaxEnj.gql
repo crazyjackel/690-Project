@@ -1,8 +1,0 @@
-#namespace enjin.sdk.player.ApproveMaxEnj
-#import enjin.sdk.shared.Transaction
-
-mutation {
-    result: ApproveMaxEnj {
-        ...Transaction
-    }
-}

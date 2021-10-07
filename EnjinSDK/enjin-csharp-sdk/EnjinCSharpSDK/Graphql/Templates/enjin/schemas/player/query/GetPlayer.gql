@@ -1,8 +1,0 @@
-#namespace enjin.sdk.player.GetPlayer
-#import enjin.sdk.shared.Player
-
-query {
-    result: GetPlayer {
-        ...Player
-    }
-}

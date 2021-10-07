@@ -1,8 +1,0 @@
-#namespace enjin.sdk.shared.GetProject
-#import enjin.sdk.shared.Project
-
-query {
-    result: GetProject {
-        ...Project
-    }
-}
