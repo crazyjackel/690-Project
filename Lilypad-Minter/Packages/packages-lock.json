@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.690tech.enjin-sdk": {
-      "version": "file:C:/Users/Jack/Documents/690/690-Project/Enjin SDK",
+      "version": "file:C:/Users/Jack/Documents/690/690-Project/EnjinSDK",
       "depth": 0,
       "source": "local",
       "dependencies": {}
