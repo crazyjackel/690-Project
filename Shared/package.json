@@ -11,7 +11,6 @@
   "category": "Unity",
   "type": "library",
   "dependencies": {
-    "com.unity.multiplayer.mlapi": "0.1.0",
-    "com.690tech.reactive": "0.0.1"
+    "com.unity.multiplayer.mlapi": "0.1.0"
   }
 }
