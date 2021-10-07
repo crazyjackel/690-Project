@@ -15,11 +15,11 @@ C:/Users/Jack/Documents/690/690-Project/Lilypad-Minter
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-53125
+62455
 Successfully changed project path to: C:/Users/Jack/Documents/690/690-Project/Lilypad-Minter
 C:/Users/Jack/Documents/690/690-Project/Lilypad-Minter
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 30.42 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 30.88 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.18f1 (a7d1c678663c)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.18f1/Editor/Data/Resources/UnitySubsystems
@@ -35,89 +35,89 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.18f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.18f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.18f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56724
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56132
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.18f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.001834 seconds.
+Registered in 0.001775 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 28.08 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 31.54 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.087 seconds
+- Completed reload, in  1.105 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1096ms)
-		BeginReloadAssembly (63ms)
+	ReloadAssembly (1106ms)
+		BeginReloadAssembly (51ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (393ms)
-			LoadAssemblies (52ms)
+		EndReloadAssembly (387ms)
+			LoadAssemblies (49ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (134ms)
+			SetupTypeCache (135ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (31ms)
-			SetupLoadedEditorAssemblies (156ms)
+			RebuildScriptCaches (33ms)
+			SetupLoadedEditorAssemblies (150ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (28ms)
+				RefreshPlugins (32ms)
 				BeforeProcessingInitializeOnLoad (15ms)
-				ProcessInitializeOnLoadAttributes (76ms)
-				ProcessInitializeOnLoadMethodAttributes (31ms)
+				ProcessInitializeOnLoadAttributes (73ms)
+				ProcessInitializeOnLoadMethodAttributes (25ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.004954 seconds.
+Registered in 0.004482 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.35 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.111 seconds
+- Completed reload, in  0.984 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1111ms)
-		BeginReloadAssembly (138ms)
+	ReloadAssembly (995ms)
+		BeginReloadAssembly (145ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (16ms)
-		EndReloadAssembly (916ms)
-			LoadAssemblies (93ms)
+			CreateAndSetChildDomain (17ms)
+		EndReloadAssembly (795ms)
+			LoadAssemblies (87ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (333ms)
+			SetupTypeCache (260ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (53ms)
-			SetupLoadedEditorAssemblies (344ms)
+			RebuildScriptCaches (77ms)
+			SetupLoadedEditorAssemblies (291ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (6ms)
+				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (91ms)
-				ProcessInitializeOnLoadAttributes (235ms)
+				BeforeProcessingInitializeOnLoad (78ms)
+				ProcessInitializeOnLoadAttributes (198ms)
 				ProcessInitializeOnLoadMethodAttributes (4ms)
 				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (6ms)
+			AwakeInstancesAfterBackupRestoration (7ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.33 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1789 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 76.9 MB.
-System memory in use after: 77.0 MB.
+Unloading 1926 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 79.9 MB.
+System memory in use after: 80.0 MB.
 
-Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 2219.
-Total: 2.353500 ms (FindLiveObjects: 0.167200 ms CreateObjectMapping: 0.066000 ms MarkObjects: 2.058300 ms  DeleteObjects: 0.060900 ms)
+Unloading 193 unused Assets to reduce memory usage. Loaded Objects now: 2184.
+Total: 2.703700 ms (FindLiveObjects: 0.141700 ms CreateObjectMapping: 0.054200 ms MarkObjects: 2.381400 ms  DeleteObjects: 0.125600 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -131,56 +131,160 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  path: Packages/com.690tech.lilypad-shared/Assets/Scripts/EnjinWallet.cs
-  artifactKey: Guid(1a35102b05c02374cb628ea82866862a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Packages/com.690tech.lilypad-shared/Assets/Scripts/EnjinWallet.cs using Guid(1a35102b05c02374cb628ea82866862a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9d50c9ce2ca96f222cb55ca852d80fa4') in 0.023863 seconds 
-  Import took 0.028400 seconds .
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk
+  artifactKey: Guid(651b26ada9a7bd54eb6bb949ae020cc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk using Guid(651b26ada9a7bd54eb6bb949ae020cc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7760e8590236a430fb9c2954096d72d5') in 0.004864 seconds 
+  Import took 0.009125 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000615 seconds.
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK.sln
+  artifactKey: Guid(49b7f256c0fddc2429de92229a0ac9db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK.sln using Guid(49b7f256c0fddc2429de92229a0ac9db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd59d761e0ec60e264d7178e5e0287c19') in 0.031658 seconds 
+  Import took 0.036099 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.729774 seconds.
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK
+  artifactKey: Guid(0008b82ec8ac8604babda874fea23a7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK using Guid(0008b82ec8ac8604babda874fea23a7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '520d22b9ba332d01f7f5404aaaa90b46') in 0.002336 seconds 
+  Import took 0.007184 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 26.909700 seconds.
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/com.690Tech.EnjinCSharp.asmdef
+  artifactKey: Guid(99981e0875cacc842b89e55de6d86d5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/com.690Tech.EnjinCSharp.asmdef using Guid(99981e0875cacc842b89e55de6d86d5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'da559a296a9a3a1e8c7fcf441ae04b3d') in 0.005672 seconds 
+  Import took 0.009871 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.020990 seconds.
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/com.690Tech.EnjinCSharp.asmdef
+  artifactKey: Guid(99981e0875cacc842b89e55de6d86d5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/com.690Tech.EnjinCSharp.asmdef using Guid(99981e0875cacc842b89e55de6d86d5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'da559a296a9a3a1e8c7fcf441ae04b3d') in 0.002532 seconds 
+  Import took 0.007317 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.004730 seconds.
+Registered in 0.004073 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.38 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.55 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.941 seconds
+- Completed reload, in  0.908 seconds
 Domain Reload Profiling:
-	ReloadAssembly (943ms)
+	ReloadAssembly (909ms)
 		BeginReloadAssembly (102ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (4ms)
+			DisableScriptedObjects (5ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (31ms)
-		EndReloadAssembly (777ms)
-			LoadAssemblies (85ms)
+		EndReloadAssembly (748ms)
+			LoadAssemblies (83ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (265ms)
+			SetupTypeCache (261ms)
 			ReleaseScriptCaches (1ms)
 			RebuildScriptCaches (38ms)
-			SetupLoadedEditorAssemblies (295ms)
+			SetupLoadedEditorAssemblies (282ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (7ms)
-				SetLoadedEditorAssemblies (1ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (87ms)
-				ProcessInitializeOnLoadAttributes (189ms)
+				BeforeProcessingInitializeOnLoad (75ms)
+				ProcessInitializeOnLoadAttributes (187ms)
 				ProcessInitializeOnLoadMethodAttributes (4ms)
 				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (6ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.34 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.35 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1783 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 76.8 MB.
-System memory in use after: 76.9 MB.
+Unloading 1920 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 80.0 MB.
+System memory in use after: 80.1 MB.
 
-Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2221.
-Total: 3.090400 ms (FindLiveObjects: 0.191500 ms CreateObjectMapping: 0.073900 ms MarkObjects: 2.807400 ms  DeleteObjects: 0.016600 ms)
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 2334.
+Total: 2.206800 ms (FindLiveObjects: 0.132900 ms CreateObjectMapping: 0.048700 ms MarkObjects: 2.004000 ms  DeleteObjects: 0.020500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 13.863646 seconds.
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/TrustedPlatformMiddleware.cs
+  artifactKey: Guid(ff60e8c29b524fa4b8e0a7ba60a53696) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/TrustedPlatformMiddleware.cs using Guid(ff60e8c29b524fa4b8e0a7ba60a53696) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6cbff4c24aa476c7d205b825aa59e946') in 0.007552 seconds 
+  Import took 0.032269 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001312 seconds.
+  path: Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/TrustedPlatformMiddleware.cs
+  artifactKey: Guid(ff60e8c29b524fa4b8e0a7ba60a53696) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.690tech.enjin-sdk/enjin-csharp-sdk/EnjinCSharpSDK/TrustedPlatformMiddleware.cs using Guid(ff60e8c29b524fa4b8e0a7ba60a53696) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6cbff4c24aa476c7d205b825aa59e946') in 0.002194 seconds 
+  Import took 0.006760 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004939 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.33 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.931 seconds
+Domain Reload Profiling:
+	ReloadAssembly (932ms)
+		BeginReloadAssembly (100ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (4ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (30ms)
+		EndReloadAssembly (777ms)
+			LoadAssemblies (81ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (263ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (39ms)
+			SetupLoadedEditorAssemblies (303ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (6ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (74ms)
+				ProcessInitializeOnLoadAttributes (212ms)
+				ProcessInitializeOnLoadMethodAttributes (4ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (7ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1747 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 76.5 MB.
+System memory in use after: 76.7 MB.
+
+Unloading 163 unused Assets to reduce memory usage. Loaded Objects now: 2188.
+Total: 3.160400 ms (FindLiveObjects: 0.178100 ms CreateObjectMapping: 0.056400 ms MarkObjects: 2.833900 ms  DeleteObjects: 0.091100 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 

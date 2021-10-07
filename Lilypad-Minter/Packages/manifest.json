@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.690tech.enjin-sdk": "file:C:/Users/Jack/Documents/690/690-Project/Enjin SDK",
+    "com.690tech.enjin-sdk": "file:C:/Users/Jack/Documents/690/690-Project/EnjinSDK",
     "com.690tech.lilypad-shared": "file:C:/Users/Jack/Documents/690/690-Project/Shared",
     "com.690tech.reactive": "file:C:/Users/Jack/Documents/690/690-Project/UniRX",
     "com.unity.collab-proxy": "1.9.0",
