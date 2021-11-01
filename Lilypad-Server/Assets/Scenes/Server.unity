@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef816c67b2655c94fbd53387c8d506ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  netRole: 0
 --- !u!114 &714925512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07838bee97839fe41822e86abdbbf4a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  token: {fileID: 11400000, guid: ea898ae6fb9f19b46a29534e23e6fa03, type: 2}
 --- !u!4 &714925513
 Transform:
   m_ObjectHideFlags: 0

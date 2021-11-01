@@ -11,14 +11,30 @@ using MLAPI.Transports;
 
 public class SharedNetworkPortal : MonoBehaviour
 {
+    public enum NetworkRole : ushort
+    {
+        Host,
+        Mint,
+        Client
+    }
+
+    public NetworkRole netRole;
     /// <summary>
     /// Called Whenever Server Acknowledges that Specific Client has connected
     /// </summary>
-    public event Action<bool> OnConnectionFinished;
+    public event Action<bool, NetworkRole> OnConnectionFinished;
     /// <summary>
     /// Called Whenever an Unfamiliar Client Connects to the Server
     /// </summary>
     public event Action<ulong> OnClientConnected;
+    /// <summary>
+    /// Called Whenever another Client Disconnects
+    /// </summary>
+    public event Action<ulong> OnClientDisconnected;
+    /// <summary>
+    /// Called when you are disconnected from a server.
+    /// </summary>
+    public event Action OnDisconnect;
 
     public static SharedNetworkPortal Singleton;
     private void Awake()
@@ -36,8 +52,21 @@ public class SharedNetworkPortal : MonoBehaviour
     void Start()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += ClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += ClientDisconnected;
 
         RegisterClientMessageHandlers();
+    }
+
+    private void ClientDisconnected(ulong obj)
+    {
+        if (obj == NetworkManager.Singleton.LocalClientId)
+        {
+            OnDisconnect?.Invoke();
+        }
+        else
+        {
+            OnClientDisconnected?.Invoke(obj);
+        }
     }
 
     private void ClientConnected(ulong obj)
@@ -54,8 +83,9 @@ public class SharedNetworkPortal : MonoBehaviour
             using (var reader = PooledNetworkReader.Get(stream))
             {
                 bool connectedSuccessfully = reader.ReadBool();
+                NetworkRole ServerType = (NetworkRole)reader.ReadUInt16();
 
-                OnConnectionFinished?.Invoke(connectedSuccessfully);
+                OnConnectionFinished?.Invoke(connectedSuccessfully, ServerType);
             }
         });
     }
@@ -69,6 +99,7 @@ public class SharedNetworkPortal : MonoBehaviour
                 using (var writer = PooledNetworkWriter.Get(buffer))
                 {
                     writer.WriteBool(status);
+                    writer.WriteUInt16((ushort)netRole);
                     CustomMessagingManager.SendNamedMessage("STC_ConnectionFinished", netId, buffer);
                 }
             }

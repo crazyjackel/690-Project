@@ -12,8 +12,17 @@ using MLAPI.Messaging;
 /// </summary>
 public class ServerNetworkPortal : MonoBehaviour
 {
-
     public static ServerNetworkPortal Singleton;
+    /// <summary>
+    /// Opens when Callbacks done Subscribing, Closes Never
+    /// </summary>
+    public static QueuedGate OnStart = new QueuedGate();
+    /// <summary>
+    /// Opens when Portal Opens, Closes Never
+    /// </summary>
+    public static QueuedGate OnInit = new QueuedGate();
+
+    public ValidationToken token;
     private void Awake()
     {
         if (Singleton != null && Singleton != this)
@@ -28,7 +37,15 @@ public class ServerNetworkPortal : MonoBehaviour
     void Start()
     {
         NetworkManager.Singleton.ConnectionApprovalCallback += ConnectionApprovalCallback;
+        NetworkManager.Singleton.OnServerStarted += ServerStartCallback;
+        OnStart.Open();
     }
+
+    private void ServerStartCallback()
+    {
+        OnInit.Open();
+    }
+
     private void ConnectionApprovalCallback(byte[] data, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
     {
         string validator = Encoding.UTF8.GetString(data);
@@ -36,7 +53,7 @@ public class ServerNetworkPortal : MonoBehaviour
         Debug.Log($"Connection Approval: {validator}");
 
         bool status = false;
-        if(validator == "Valid")
+        if(token != null && validator == token.HashedVersion)
         {
             status = true;
         }

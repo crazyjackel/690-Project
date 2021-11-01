@@ -7,6 +7,10 @@ public class Startup : MonoBehaviour
 {
     void Start()
     {
-        NetworkManager.Singleton.StartServer();    
+        ServerNetworkPortal.OnStart.AddListener(() =>
+            {
+                NetworkManager.Singleton.StartServer();
+            }
+        );
     }
 }
