@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(ValidationToken)), CanEditMultipleObjects]
 public class ValidationEditor : Editor
 {
@@ -19,3 +20,4 @@ public class ValidationEditor : Editor
         }
     }
 }
+#endif
