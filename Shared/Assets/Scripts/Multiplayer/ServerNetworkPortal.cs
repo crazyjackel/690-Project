@@ -10,40 +10,27 @@ using MLAPI.Messaging;
 /// Portal for Starting the Server
 /// Tells what the Server should do based on Events
 /// </summary>
-public class ServerNetworkPortal : MonoBehaviour
+public class ServerNetworkPortal : MonoBehaviour, IClient, IProvider
 {
-    public static ServerNetworkPortal Singleton;
-    /// <summary>
-    /// Opens when Callbacks done Subscribing, Closes Never
-    /// </summary>
-    public static QueuedGate OnStart = new QueuedGate();
-    /// <summary>
-    /// Opens when Portal Opens, Closes Never
-    /// </summary>
-    public static QueuedGate OnInit = new QueuedGate();
 
     public ValidationToken token;
-    private void Awake()
-    {
-        if (Singleton != null && Singleton != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
 
-        Singleton = this;
-        DontDestroyOnLoad(gameObject);
-    }
-    void Start()
+    private SharedNetworkPortal _portal;
+
+    private NetworkManager _network;
+
+    private void OnEnable()
     {
-        NetworkManager.Singleton.ConnectionApprovalCallback += ConnectionApprovalCallback;
-        NetworkManager.Singleton.OnServerStarted += ServerStartCallback;
-        OnStart.Open();
+        DepInjector.AddProvider(this);
+    }
+    private void OnDisable()
+    {
+        DepInjector.Remove(this);
     }
 
-    private void ServerStartCallback()
+    private void OnDestroy()
     {
-        OnInit.Open();
+        DepInjector.Remove(this);
     }
 
     private void ConnectionApprovalCallback(byte[] data, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
@@ -53,13 +40,32 @@ public class ServerNetworkPortal : MonoBehaviour
         Debug.Log($"Connection Approval: {validator}");
 
         bool status = false;
-        if(token != null && validator == token.HashedVersion)
+        if (token != null && validator == token.HashedVersion && _portal != null)
         {
             status = true;
         }
 
         callback(false, 0, status, null, null);
 
-        SharedNetworkPortal.Singleton.ServerToClientConnectResult(clientId, status);
+        _portal?.ServerToClientConnectResult(clientId, status);
+    }
+
+    public void NewProviderAvailable(IProvider newProvider)
+    {
+        DepInjector.MapProvider(newProvider, ref _portal);
+        if(DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network))
+        {
+            _network.ConnectionApprovalCallback += ConnectionApprovalCallback;
+        }
+    }
+
+    public void ProviderRemoved(IProvider removeProvider)
+    {
+        DepInjector.UnmapProvider(removeProvider, ref _portal);
+        DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
+    }
+
+    public void NewProviderFullyInstalled(IProvider newProvider)
+    {
     }
 }

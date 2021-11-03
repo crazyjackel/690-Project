@@ -32,7 +32,7 @@ public class CoroutineTimer
             {
                 yield return new WaitForSeconds(duration);
 
-                if (callback != null)
+                if (callback != null && !stop)
                     callback();
             }
         } while (repeat && !stop);

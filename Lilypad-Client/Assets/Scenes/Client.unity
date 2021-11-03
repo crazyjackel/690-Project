@@ -1819,6 +1819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19e5fd1dd66bd346b179c1957f65a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _portal: {fileID: 0}
   token: {fileID: 11400000, guid: ea898ae6fb9f19b46a29534e23e6fa03, type: 2}
 --- !u!1001 &2943138987015066371
 PrefabInstance:

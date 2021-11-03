@@ -9,7 +9,7 @@ using System.Linq;
 using MLAPI.Transports;
 
 
-public class SharedNetworkPortal : MonoBehaviour
+public class SharedNetworkPortal : MonoBehaviour, IClient, IProvider
 {
     public enum NetworkRole : ushort
     {
@@ -36,30 +36,32 @@ public class SharedNetworkPortal : MonoBehaviour
     /// </summary>
     public event Action OnDisconnect;
 
-    public static SharedNetworkPortal Singleton;
-    private void Awake()
-    {
-        if (Singleton != null && Singleton != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+    private NetworkManager _network;
 
-        Singleton = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     void Start()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback += ClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback += ClientDisconnected;
-
         RegisterClientMessageHandlers();
+    }
+
+    private void OnEnable()
+    {
+        DepInjector.AddProvider(this);   
+    }
+
+    private void OnDisable()
+    {
+        DepInjector.Remove(this);
+    }
+
+    private void OnDestroy()
+    {
+        DepInjector.Remove(this);
     }
 
     private void ClientDisconnected(ulong obj)
     {
-        if (obj == NetworkManager.Singleton.LocalClientId)
+        if (obj == _network.LocalClientId)
         {
             OnDisconnect?.Invoke();
         }
@@ -71,7 +73,7 @@ public class SharedNetworkPortal : MonoBehaviour
 
     private void ClientConnected(ulong obj)
     {
-        if (obj == NetworkManager.Singleton.LocalClientId) return;
+        if (obj == _network.LocalClientId) return;
         OnClientConnected?.Invoke(obj);
     }
 
@@ -92,7 +94,9 @@ public class SharedNetworkPortal : MonoBehaviour
 
     public void ServerToClientConnectResult(ulong netId, bool status)
     {
-        if (NetworkManager.Singleton.ConnectedClients.Keys.Contains(netId))
+        if (_network == null) return;
+
+        if (_network.ConnectedClients.Keys.Contains(netId))
         {
             using (var buffer = PooledNetworkBuffer.Get())
             {
@@ -106,4 +110,22 @@ public class SharedNetworkPortal : MonoBehaviour
         }
     }
 
+    public void NewProviderAvailable(IProvider newProvider)
+    {
+        if(DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider,ref _network))
+        {
+            _network.OnClientConnectedCallback += ClientConnected;
+            _network.OnClientDisconnectCallback += ClientDisconnected;
+        }
+    }
+
+    public void ProviderRemoved(IProvider removeProvider)
+    {
+        DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
+    }
+
+    public void NewProviderFullyInstalled(IProvider newProvider)
+    {
+
+    }
 }

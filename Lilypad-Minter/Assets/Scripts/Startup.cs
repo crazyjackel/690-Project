@@ -5,15 +5,60 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Startup : MonoBehaviour
+public class Startup : MonoBehaviour, IClient, Initializeable
 {
     public UNetTransport transport;
-    void Start()
+
+    private NetworkManager _network;
+    private ServerNetworkPortal _portal;
+
+    private bool initialized = false;
+
+    public void OnEnable()
     {
-        ServerNetworkPortal.OnStart.AddListener(() =>
+        DepInjector.AddClient(this);
+    }
+    public void OnDisable()
+    {
+        DepInjector.Remove(this);
+    }
+    public void OnDestroy()
+    {
+        DepInjector.Remove(this);
+    }
+    public bool CanInitialize()
+    {
+        return _network != null && _portal != null;
+    }
+    public void TryInitialize(bool requireIntiailization = false)
+    {
+        initialized = initialized && !requireIntiailization;
+        if (!initialized && CanInitialize())
         {
-            transport.ServerListenPort = 7778;
-            NetworkManager.Singleton.StartServer();
-        });
+            Initialize();
+        }
+    }
+    public void Initialize()
+    {
+        initialized = true;
+        transport.ServerListenPort = 7778;
+        _network.StartServer();
+    }
+
+    public void NewProviderAvailable(IProvider newProvider)
+    {
+        DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
+        DepInjector.MapProvider(newProvider, ref _portal);
+    }
+
+    public void NewProviderFullyInstalled(IProvider newProvider)
+    {
+        TryInitialize(false);
+    }
+
+    public void ProviderRemoved(IProvider removeProvider)
+    {
+        DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
+        DepInjector.UnmapProvider(removeProvider, ref _portal);
     }
 }
