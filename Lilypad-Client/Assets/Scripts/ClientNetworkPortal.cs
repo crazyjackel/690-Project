@@ -22,7 +22,7 @@ public class ClientNetworkPortal : MonoBehaviour, IClient, IProvider
 
     public SharedNetworkPortal.NetworkRole? connectedRole;
 
-    public SharedNetworkPortal _portal;
+    private SharedNetworkPortal _portal;
 
     private bool m_isConnected = false;
     public bool isConnected { get { return m_isConnected; } }
