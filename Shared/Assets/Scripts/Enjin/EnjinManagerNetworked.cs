@@ -37,7 +37,7 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
     public void NotifyTokenUpdateClientRPC(string newToken, ClientRpcParams RPCparams = default)
     {
         if (NetworkManager.Singleton.IsServer || _manager == null) return;
-        _manager.OnAccessTokenUpdate?.Invoke(newToken);
+        _manager.SetToken(newToken);
     }
 
     private void OnEnable()

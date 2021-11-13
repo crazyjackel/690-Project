@@ -8,103 +8,84 @@ using System;
 using System.Threading.Tasks;
 using MLAPI;
 
-
-public class EnjinManager : MonoBehaviour, IClient, IProvider, Initializeable
+namespace Enjin.SDK.Core
 {
-    private EnjinManagerNetworked _enjinManagerNetworked;
-
-    private NetworkManager _network;
-
-    public ServerWallet serverWallet;
-
-    public Action<string> OnAccessTokenUpdate;
-
-    public CoroutineTimer RefreshPlatformTimer;
-
-    private bool initialized = false;
-
-    public bool TryGetAccessToken(out string token)
+    public abstract class EnjinManager : MonoBehaviour, IClient, IProvider, Initializeable
     {
-        if (_network != null && _network.IsServer && serverWallet != null)
+        protected EnjinManagerNetworked _enjinManagerNetworked;
+        protected NetworkManager _network;
+
+        private bool initialized = false;
+        protected string curToken = "";
+
+        public Action<string> OnAccessTokenUpdate;
+
+        public virtual void OnEnable()
         {
-            token = serverWallet.GetAccessToken();
-            return true;
+            DepInjector.AddProvider(this);
         }
-        token = "";
-        return false;
-    }
 
-
-    public void UpdatePlatform(EnjinManagerNetworked _EnjinNetwork)
-    {
-        if (_network == null || !_network.IsServer) return;
-        Debug.Log("Updating Platform... ");
-        serverWallet?.StartPlatform();
-        _EnjinNetwork.NotifyTokenUpdateClientRPC(serverWallet.GetAccessToken());
-    }
-
-    private void StartUpdateCycle(EnjinManagerNetworked _EnjinNetwork)
-    {
-        if (_network == null || !_network.IsServer) return;
-        RefreshPlatformTimer = new CoroutineTimer(
-                    (float)TimeSpan.FromSeconds(10).TotalSeconds,
-                    true,
-                    () => UpdatePlatform(_EnjinNetwork),
-                    true);
-        StartCoroutine(RefreshPlatformTimer.Start());
-    }
-
-    public void OnEnable()
-    {
-        DepInjector.AddProvider(this);
-    }
-
-    public void OnDisable()
-    {
-        DepInjector.Remove(this);
-    }
-
-    public void OnDestroy()
-    {
-        DepInjector.Remove(this);
-    }
-
-    public void NewProviderAvailable(IProvider newProvider)
-    {
-        DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
-        DepInjector.MapProvider(newProvider, ref _enjinManagerNetworked);
-    }
-    public void NewProviderFullyInstalled(IProvider newProvider)
-    {
-        TryInitialize(false);
-    }
-    public void ProviderRemoved(IProvider removeProvider)
-    {
-        DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
-        if (DepInjector.UnmapProvider(removeProvider, ref _enjinManagerNetworked))
+        public virtual void OnDisable()
         {
-            RefreshPlatformTimer?.Stop();
+            DepInjector.Remove(this);
         }
-    }
-    public bool CanInitialize()
-    {
-        return _enjinManagerNetworked != null && _network != null;
-    }
-    public void TryInitialize(bool requireIntiailization = false)
-    {
-        initialized = initialized && !requireIntiailization;
-        if (!initialized && CanInitialize())
+
+        public virtual void OnDestroy()
         {
-            Initialize();
+            DepInjector.Remove(this);
         }
-    }
-    public void Initialize()
-    {
-        initialized = true;
-        StartUpdateCycle(_enjinManagerNetworked);
+
+        public void SetToken(string Token)
+        {
+            curToken = Token;
+            OnAccessTokenUpdate?.Invoke(Token);
+        }
+        public virtual bool TryGetAccessToken(out string token)
+        {
+            token = "";
+            return false;
+        }
+
+        public virtual void NewProviderAvailable(IProvider newProvider)
+        {
+            DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
+            DepInjector.MapProvider(newProvider, ref _enjinManagerNetworked);
+        }
+        public virtual void NewProviderFullyInstalled(IProvider newProvider)
+        {
+            TryInitialize(false);
+        }
+        public virtual void ProviderRemoved(IProvider removeProvider)
+        {
+            DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
+            if (DepInjector.UnmapProvider(removeProvider, ref _enjinManagerNetworked))
+            {
+                OnNetworkLost();
+            }
+        }
+
+        public virtual bool CanInitialize()
+        {
+            return _enjinManagerNetworked != null && _network != null;
+        }
+        public void TryInitialize(bool requireIntiailization = false)
+        {
+            initialized = initialized && !requireIntiailization;
+            if (!initialized && CanInitialize())
+            {
+                Initialize();
+            }
+        }
+        public void Initialize()
+        {
+            initialized = true;
+            Init();
+        }
+
+        public virtual void OnNetworkLost() { }
+        public virtual void Init() { }
     }
 }
-
 /*
 public class EnjinManager : MonoBehaviour
 {

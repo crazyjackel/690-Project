@@ -12,6 +12,8 @@ namespace Enjin.SDK.Core
         [SerializeField] string PLATFORM_URL;
         [SerializeField] int APP_ID;
 
+        [SerializeField] string UserName;
+
         private string Access_Token;
 
         public void StartSession(string AccessToken)
@@ -21,5 +23,9 @@ namespace Enjin.SDK.Core
             Access_Token = AccessToken;
         }
 
+        public void GetUserInfo()
+        {
+            Enjin.GetUser()
+        }
     }
 }

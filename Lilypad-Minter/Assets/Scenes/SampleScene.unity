@@ -459,7 +459,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1739413771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dddd04953a5b3a45bebd35f72c092c2, type: 3}
+  m_Script: {fileID: 11500000, guid: deb7fa8b0bfba004182e0c3b8f08c5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serverWallet: {fileID: 11400000, guid: 1645a1e1f30b46042b597bec6fb0b6b5, type: 2}
