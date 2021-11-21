@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class CustomDebugger : MonoBehaviour
 {
+    [SerializeField]
+    public int MaxLength = 100000;
+
     public Text text;
     private void OnEnable()
     {
@@ -21,6 +24,11 @@ public class CustomDebugger : MonoBehaviour
 
     private void Application_logMessageReceived(string condition, string stackTrace, LogType type)
     {
+        
         text.text += $"[{Enum.GetName(typeof(LogType), type)}] {condition}\n";
+        if(text.text.Length > MaxLength)
+        {
+            text.text = text.text.Substring(text.text.IndexOf('\n'));
+        }
     }
 }

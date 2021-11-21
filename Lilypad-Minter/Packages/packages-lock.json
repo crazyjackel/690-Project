@@ -12,7 +12,8 @@
       "source": "local",
       "dependencies": {
         "com.unity.multiplayer.mlapi": "0.1.0",
-        "com.690tech.reactive": "0.0.1"
+        "com.690tech.reactive": "0.0.1",
+        "com.unity.ui": "1.0.0-preview.18"
       }
     },
     "com.690tech.reactive": {
@@ -88,6 +89,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.textcore": {
+      "version": "1.0.0-preview.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.textmeshpro": {
       "version": "3.0.6",
       "depth": 0,
@@ -117,6 +125,16 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "com.unity.ui": {
+      "version": "1.0.0-preview.18",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielementsnative": "1.0.0",
+        "com.unity.textcore": "1.0.0-preview.3"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

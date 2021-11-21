@@ -6,6 +6,7 @@ using MLAPI.Transports.UNET;
 using System;
 using Enjin.SDK.Core;
 using ENJ = Enjin.SDK.Core;
+using UniRx;
 
 public class ClientUIOptions : MonoBehaviour, IClient
 {
@@ -18,7 +19,7 @@ public class ClientUIOptions : MonoBehaviour, IClient
     ClientNetworkPortal _clientPortal;
     NetworkManager _network;
     EnjinManagerNetworked _enjinNetworked;
-    EnjinManager _enjin;
+    ClientEnjinManager _enjin;
 
     public void ConnectToServer()
     {
@@ -39,6 +40,11 @@ public class ClientUIOptions : MonoBehaviour, IClient
         if (_enjinNetworked == null) return;
 
         _enjinNetworked.RequestTokenServerRPC(NetworkManager.Singleton.LocalClientId);
+    }
+
+    public void CreateUser()
+    {
+        _enjin.playerWallet.CreateUser();
     }
     private void OnNewToken(string obj)
     {
@@ -65,7 +71,7 @@ public class ClientUIOptions : MonoBehaviour, IClient
         DepInjector.MapProvider(newProvider, ref _enjinNetworked);
         if(DepInjector.MapProvider(newProvider, ref _enjin))
         {
-            _enjin.OnAccessTokenUpdate += OnNewToken;
+            _enjin.AccessToken.Subscribe(OnNewToken);
         }
     }
 

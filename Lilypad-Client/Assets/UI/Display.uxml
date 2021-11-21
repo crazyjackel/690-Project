@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="UIStyle.uss" />
+    <ui:VisualElement name="VisualElement" class="container" style="width: 100%; height: 100%;">
+        <ui:IMGUIContainer class="upper-dock">
+            <ui:IMGUIContainer name="IMGUIContainer">
+                <ui:TextField picking-mode="Ignore" label="IP Address" value="127.0.0.1" text="127.0.0.1" password="false" />
+                <ui:TextField picking-mode="Ignore" label="Port" value="7777" text="7777" password="false" />
+                <ui:Button text="Connect" display-tooltip-when-elided="true" name="Connect_Button" />
+            </ui:IMGUIContainer>
+            <ui:IMGUIContainer name="IMGUIContainer">
+                <ui:TextField picking-mode="Ignore" label="User Name" password="false" is-delayed="false" />
+                <ui:Button text="Login" display-tooltip-when-elided="true" />
+            </ui:IMGUIContainer>
+        </ui:IMGUIContainer>
+        <ui:IMGUIContainer class="lower-dock">
+            <ui:ScrollView show-vertical-scroller="true" show-horizontal-scroller="false" horizontal-scroller-visibility="Hidden" class="scroll-container" style="align-items: center; justify-content: flex-start; flex-direction: column;">
+                <ui:Label display-tooltip-when-elided="true" name="Debug_Label" class="scroll-label" style="background-color: rgb(0, 0, 0); height: 550%; left: 0.5%; right: 1%;" />
+            </ui:ScrollView>
+        </ui:IMGUIContainer>
+    </ui:VisualElement>
+    <ui:VisualElement class="container" style="position: absolute; width: 100%; height: 100%; align-items: center; justify-content: center;">
+        <ui:VisualElement name="Container" style="white-space: normal; align-items: stretch; flex-direction: row; flex-wrap: wrap;">
+            <ui:VisualElement class="top-bar" style="width: 95%; height: 5%; border-left-color: rgb(31, 31, 31); border-right-color: rgb(31, 31, 31); border-top-color: rgb(31, 31, 31); border-bottom-color: rgb(31, 31, 31); background-color: rgb(65, 65, 65);" />
+            <ui:VisualElement class="top-bar-icon" style="width: 5%; height: 5%; border-left-color: rgb(65, 65, 65); border-right-color: rgb(65, 65, 65); border-top-color: rgb(65, 65, 65); border-bottom-color: rgb(65, 65, 65);">
+                <ui:Button display-tooltip-when-elided="true" enable-rich-text="false" class="top-bar-button" style="border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgb(65, 65, 65); background-image: url(&apos;/Assets/Textures/X.png&apos;); -unity-background-scale-mode: stretch-to-fill; -unity-background-image-tint-color: rgb(188, 188, 188); width: 90%; height: 90%;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Image" style="width: 1%; height: 95%;">
+                <ui:VisualElement name="Image_Texture" style="width: 0; height: 0; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

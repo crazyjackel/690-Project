@@ -10,7 +10,6 @@ namespace Enjin.SDK.Core {
 
         public void DoFunc()
         {
-            Enjin.
         }
     }
 }

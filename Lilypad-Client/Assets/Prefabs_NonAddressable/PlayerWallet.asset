@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PLATFORM_URL: https://kovan.cloud.enjin.io/
   APP_ID: 5346
+  UserName: Test_Username_01

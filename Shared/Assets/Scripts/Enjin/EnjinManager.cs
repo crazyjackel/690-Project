@@ -7,6 +7,7 @@ using System.Threading;
 using System;
 using System.Threading.Tasks;
 using MLAPI;
+using UniRx;
 
 namespace Enjin.SDK.Core
 {
@@ -16,9 +17,8 @@ namespace Enjin.SDK.Core
         protected NetworkManager _network;
 
         private bool initialized = false;
-        protected string curToken = "";
 
-        public Action<string> OnAccessTokenUpdate;
+        public ReactiveProperty<string> AccessToken { get; protected set; } = new ReactiveProperty<string>();
 
         public virtual void OnEnable()
         {
@@ -37,8 +37,7 @@ namespace Enjin.SDK.Core
 
         public void SetToken(string Token)
         {
-            curToken = Token;
-            OnAccessTokenUpdate?.Invoke(Token);
+            AccessToken.Value = Token;
         }
         public virtual bool TryGetAccessToken(out string token)
         {
