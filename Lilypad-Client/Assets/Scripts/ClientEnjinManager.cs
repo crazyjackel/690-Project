@@ -7,9 +7,5 @@ namespace Enjin.SDK.Core {
     public class ClientEnjinManager : EnjinManager
     {
         public PlayerWallet playerWallet;
-
-        public void DoFunc()
-        {
-        }
     }
 }

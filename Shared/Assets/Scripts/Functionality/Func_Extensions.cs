@@ -24,8 +24,8 @@ public static class Func_Extensions
 
     public static IDisposable BindToClick(this Button button, ReactiveCommand command)
     {
-        var d1 = command.CanExecute.SubscribeWithState(button, (x, s) => s.SetEnabled(true));
-        var d2 = Observable.FromEvent(h => h, h => button.clicked += h, h => button.clicked -= h).SubscribeWithState(command, (x, c) => c.Execute(x));
+        var d1 = command.CanExecute.SubscribeWithState(button, (x, s) => s.SetEnabled(x));
+        var d2 = Observable.FromEvent(h => h, h => button.clicked += h, h => button.clicked -= h).SubscribeWithState(command, (x, c) => c.Execute());
         return StableCompositeDisposable.Create(d1, d2);
     }
 

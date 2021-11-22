@@ -12,7 +12,7 @@ public abstract class ViewModel<VM> : MonoBehaviour, IClient where VM:ViewModel<
 
     public ViewModel()
     {
-        ObserveInit = Initialized.Select(x => (VM)this);
+        ObserveInit = Initialized.Where(x => x).Select(x => (VM)this);
     }
     public virtual void OnEnable()
     {

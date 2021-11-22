@@ -17,18 +17,5 @@ public class MainView : View<MainViewModel>
         viewModel.DebugText.BindTo(x => simpleLabel.text = x).AddTo(disposable);
 
         ConnectButton.BindToClick(viewModel.ConnectCommand).AddTo(disposable);
-
-        /*
-        viewModel.DebugText.ObserveEveryValueChanged(x => x.Value).Subscribe(x =>
-        {
-            simpleLabel.text = x;
-        });
-        */
-        Debug.Log("Test Console");
-    }
-
-    private void ConnectButton_clicked()
-    {
-        Debug.Log("Hello");
     }
 }

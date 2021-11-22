@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 /*
@@ -70,6 +71,15 @@ public static class DepInjector
         }
         return false;
     }
+    public static bool MapProvider<T, U>(IProvider provider, ReactiveProperty<U> val) where T : SingletonToProvider<U> where U : MonoBehaviour
+    {
+        if (provider is T ret)
+        {
+            val.Value = ret.getRef();
+            return true;
+        }
+        return false;
+    }
 
     public static bool UnmapProvider<T,U>(IProvider provider, ref U val) where T : SingletonToProvider<U> where U : MonoBehaviour
     {
@@ -80,8 +90,16 @@ public static class DepInjector
         }
         return false;
     }
-
-    public static bool MapProvider<T>(IProvider provider, ref T val)
+    public static bool UnmapProvider<T, U>(IProvider provider, ReactiveProperty<U> val) where T : SingletonToProvider<U> where U : MonoBehaviour
+    {
+        if (provider is T)
+        {
+            val.Value = default(U);
+            return true;
+        }
+        return false;
+    }
+    public static bool MapProvider<T>(IProvider provider, ref T val) where T : IProvider
     {
         if(provider is T ret)
         {
@@ -91,11 +109,30 @@ public static class DepInjector
         return false;
     }
 
-    public static bool UnmapProvider<T>(IProvider provider, ref T val)
+    public static bool MapProvider<T>(IProvider provider, ReactiveProperty<T> val) where T : IProvider
+    {
+        if (provider is T ret)
+        {
+            val.Value = ret;
+            return true;
+        }
+        return false;
+    }
+
+    public static bool UnmapProvider<T>(IProvider provider, ref T val) where T : IProvider
     {
         if(provider is T)
         {
             val = default(T);
+            return true;
+        }
+        return false;
+    }
+    public static bool UnmapProvider<T>(IProvider provider, ReactiveProperty<T> val) where T : IProvider
+    {
+        if (provider is T)
+        {
+            val.Value = default(T);
             return true;
         }
         return false;
