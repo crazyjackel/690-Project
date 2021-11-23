@@ -24,18 +24,35 @@ namespace Enjin.SDK.Core
 
         public ReactiveProperty<Texture2D> QRCode = new ReactiveProperty<Texture2D>();
 
+        [SerializeField]
         private string Access_Token;
 
         public void StartSession(string AccessToken)
         {
-            Enjin.StartPlatformWithToken(PLATFORM_URL, APP_ID, AccessToken);
-            Debug.Log($"Started Platform: {AccessToken}");
-            Access_Token = AccessToken;
+            if (Enjin.LoginState != LoginState.VALID || Enjin.AccessToken != AccessToken)
+            {
+                Enjin.StartPlatformWithToken(PLATFORM_URL, APP_ID, AccessToken);
+                Debug.Log($"Started Platform: {AccessToken}");
+                Access_Token = AccessToken;
+            }
         }
 
-        public void CreateUser()
+        public bool CreateUser()
         {
-            User userInfo = Enjin.CreatePlayer(UserName);
+            try
+            {
+                Enjin.CreatePlayer(UserName);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void SetUser(string username)
+        {
+            UserName = username;
         }
 
         public IObservable<Texture2D> RequestLinkQRCode()
@@ -45,8 +62,13 @@ namespace Enjin.SDK.Core
 
         IEnumerator GetTexture(string username, IObserver<Texture2D> observer, CancellationToken cancellationToken)
         {
-            //Get User
-            User userInfo = Enjin.GetUser(username);
+            User userInfo = null;
+            try
+            {
+                //Get User
+                userInfo = Enjin.GetUser(username);
+            }
+            finally { }
             //Validate User
             if (userInfo == null)
             {
@@ -74,7 +96,7 @@ namespace Enjin.SDK.Core
             //Get QR
             string QR = UserAppID.linkingCodeQr;
             //Validate QR
-            if (QR != null && QR != "")
+            if (QR == null || QR == "")
             {
                 observer.OnError(new Exception("Bad Link"));
                 yield break;

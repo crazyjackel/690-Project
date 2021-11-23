@@ -56,7 +56,9 @@ MonoBehaviour:
     - Client
     - SampleScene
     AllowRuntimeSceneChanges: 0
-    NetworkPrefabs: []
+    NetworkPrefabs:
+    - Prefab: {fileID: 6920428343541358010, guid: fe3891dda0b464346985641003f260d3, type: 3}
+      PlayerPrefab: 0
     PlayerPrefabHash:
       id: 0
     CreatePlayerPrefab: 0

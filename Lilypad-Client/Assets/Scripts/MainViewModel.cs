@@ -19,6 +19,8 @@ public class MainViewModel : ViewModel<MainViewModel>
     private ReactiveCommand _loginCommand;
     public ReactiveCommand LoginCommand => _loginCommand;
 
+    private ReactiveCommand _createCommand;
+    public ReactiveCommand CreateCommand => _createCommand;
 
     private ReactiveProperty<string> _connectAddress = new ReactiveProperty<string>("127.0.0.1");
     public ReactiveProperty<string> ConnectAddress => _connectAddress;
@@ -27,10 +29,13 @@ public class MainViewModel : ViewModel<MainViewModel>
     private ReactiveProperty<int> _connectPort = new ReactiveProperty<int>(7777);
     public ReactiveProperty<int> ConnectPort => _connectPort;
 
-    private ReactiveProperty<string> _userName => new ReactiveProperty<string>();
+    private ReactiveProperty<string> _userName = new ReactiveProperty<string>();
     public ReactiveProperty<string> UserName => _userName;
 
-    
+
+    private ReactiveProperty<Texture2D> _qrCode = new ReactiveProperty<Texture2D>();
+    public ReactiveProperty<Texture2D> QRCode => _qrCode;
+
     private ReactiveProperty<string> _debugText = new ReactiveProperty<string>("");
     public ReactiveProperty<string> DebugText => _debugText;
 
@@ -41,18 +46,66 @@ public class MainViewModel : ViewModel<MainViewModel>
     private UNetTransport _transport => _transportProp.Value;
     private ReactiveProperty<UNetTransport> _transportProp = new ReactiveProperty<UNetTransport>();
 
+    private ReactiveProperty<string> _accessToken = new ReactiveProperty<string>();
     private ClientEnjinManager _enjin => _enjinProp.Value;
     private ReactiveProperty<ClientEnjinManager> _enjinProp = new ReactiveProperty<ClientEnjinManager>();
 
+
+
     public override void OnInitialization()
     {
-        _connectCommand = new ReactiveCommand(_networkProp.CombineLatest(_transportProp, _clientProp, (x,y,z) => x && y && z));
+        _connectCommand = new ReactiveCommand(_networkProp.CombineLatest(_transportProp, _clientProp, (x, y, z) => x && y && z));
 
         _connectCommand.Subscribe(_ =>
         {
             _transport.ConnectPort = _connectPort.Value;
             _transport.ConnectAddress = _connectAddress.Value;
             _clientPortal.Connect(_network);
+        });
+
+
+        _enjinProp.Where(x => x != null).Subscribe(x =>
+        {
+            x.isConnected.Subscribe(y =>
+            {
+                if(y) x.UpdateAccessToken();
+            });
+
+            x.AccessToken.Subscribe(y =>
+            {
+                _accessToken.Value = y;
+            });
+        });
+
+        _loginCommand = new ReactiveCommand(
+            _enjinProp
+            .CombineLatest(_userName, _accessToken, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && (tk != null) && (tk != "")));
+
+        _loginCommand.Subscribe(_ =>
+        {
+            _enjin.Login(_userName.Value).Subscribe(x =>
+            {
+                _qrCode.Value = x;
+            });
+        });
+
+
+        _createCommand = new ReactiveCommand(
+            _enjinProp
+            .CombineLatest(_userName, _accessToken, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && (tk != null) && (tk != "")));
+
+        _createCommand.Subscribe(_ =>
+        {
+            _enjin.CreateUser(_userName.Value);
+        });
+
+        _userName.Subscribe(x =>
+        {
+            Debug.Log(x);
+        });
+        _accessToken.Subscribe(x =>
+        {
+            Debug.Log(x);
         });
     }
 

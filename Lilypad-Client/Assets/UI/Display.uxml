@@ -3,13 +3,14 @@
     <ui:VisualElement name="VisualElement" focusable="true" class="container" style="width: 100%; height: 100%;">
         <ui:IMGUIContainer class="upper-dock" style="flex-wrap: nowrap; flex-direction: row;">
             <ui:IMGUIContainer name="IMGUIContainer" style="align-items: stretch; justify-content: center; width: 50%;">
-                <ui:TextField picking-mode="Ignore" label="IP Address" value="127.0.0.1" text="127.0.0.1" password="false" />
-                <ui:TextField picking-mode="Ignore" label="Port" value="7777" text="7777" password="false" />
+                <ui:TextField picking-mode="Ignore" label="IP Address" value="127.0.0.1" text="127.0.0.1" password="false" name="IP_Textfield" />
+                <ui:TextField picking-mode="Ignore" label="Port" value="7777" text="7777" password="false" name="Port_Textfield" />
                 <ui:Button text="Connect" display-tooltip-when-elided="true" name="Connect_Button" />
             </ui:IMGUIContainer>
             <ui:IMGUIContainer name="IMGUIContainer" style="width: 50%; justify-content: center;">
-                <ui:TextField picking-mode="Ignore" label="User Name" password="false" is-delayed="false" />
-                <ui:Button text="Login" display-tooltip-when-elided="true" />
+                <ui:TextField picking-mode="Ignore" label="User Name" password="false" is-delayed="false" name="User_Textfield" />
+                <ui:Button text="Login" display-tooltip-when-elided="true" name="Login_Button" />
+                <ui:Button text="Create" display-tooltip-when-elided="true" name="Create_Button" />
             </ui:IMGUIContainer>
         </ui:IMGUIContainer>
         <ui:IMGUIContainer class="lower-dock">

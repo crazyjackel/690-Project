@@ -13,7 +13,13 @@ namespace Enjin.SDK.Core
 {
     public abstract class EnjinManager : MonoBehaviour, IClient, IProvider, Initializeable
     {
-        protected EnjinManagerNetworked _enjinManagerNetworked;
+        //protected EnjinManagerNetworked _enjinManagerNetworked;
+
+        protected EnjinManagerNetworked _enjinManagerNetworked => _enjinManagerNetworkedProp.Value;
+        private ReactiveProperty<EnjinManagerNetworked> _enjinManagerNetworkedProp = new ReactiveProperty<EnjinManagerNetworked>();
+        public IReadOnlyReactiveProperty<bool> isConnected;
+        
+
         protected NetworkManager _network;
 
         private bool initialized = false;
@@ -22,6 +28,7 @@ namespace Enjin.SDK.Core
 
         public virtual void OnEnable()
         {
+            isConnected = _enjinManagerNetworkedProp.Select(x => x != null).ToReactiveProperty();
             DepInjector.AddProvider(this);
         }
 
@@ -48,7 +55,7 @@ namespace Enjin.SDK.Core
         public virtual void NewProviderAvailable(IProvider newProvider)
         {
             DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
-            DepInjector.MapProvider(newProvider, ref _enjinManagerNetworked);
+            DepInjector.MapProvider(newProvider, _enjinManagerNetworkedProp);
         }
         public virtual void NewProviderFullyInstalled(IProvider newProvider)
         {
@@ -57,7 +64,7 @@ namespace Enjin.SDK.Core
         public virtual void ProviderRemoved(IProvider removeProvider)
         {
             DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
-            if (DepInjector.UnmapProvider(removeProvider, ref _enjinManagerNetworked))
+            if (DepInjector.UnmapProvider(removeProvider, _enjinManagerNetworkedProp))
             {
                 OnNetworkLost();
             }

@@ -25,8 +25,19 @@ public static class Func_Extensions
     public static IDisposable BindToClick(this Button button, ReactiveCommand command)
     {
         var d1 = command.CanExecute.SubscribeWithState(button, (x, s) => s.SetEnabled(x));
-        var d2 = Observable.FromEvent(h => h, h => button.clicked += h, h => button.clicked -= h).SubscribeWithState(command, (x, c) => c.Execute());
+        var d2 = Observable.FromEvent(h => h, h => button.RegisterCallback<ClickEvent>(evt => h.Invoke()), h => button.clicked -= h).SubscribeWithState(command, (x, c) => c.Execute());
         return StableCompositeDisposable.Create(d1, d2);
+    }
+    public static IDisposable BindToTextLabel(this TextField field, ReactiveProperty<string> property) { 
+        EventCallback<ChangeEvent<string>> eventCallback = new EventCallback<ChangeEvent<string>>(evt => property.Value = evt.newValue);
+        field.RegisterCallback(eventCallback);
+        return Disposable.Create(() => field.UnregisterCallback(eventCallback));
+    }
+    public static IDisposable BindToTextLabel<T>(this TextField field, ReactiveProperty<T> property, Func<string,T,T> selector)
+    {
+        EventCallback<ChangeEvent<string>> eventCallback = new EventCallback<ChangeEvent<string>>(evt => property.Value = selector(evt.newValue, property.Value));
+        field.RegisterCallback(eventCallback);
+        return Disposable.Create(() => field.UnregisterCallback(eventCallback));
     }
 
     public static IDisposable BindToEvent(this Action act, ReactiveCommand command)

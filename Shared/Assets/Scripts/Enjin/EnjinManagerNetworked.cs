@@ -14,9 +14,10 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
     private SharedNetworkPortal _portal;
 
   
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(RequireOwnership =false)]
     public void RequestTokenServerRPC(ulong clientID)
     {
+        Debug.Log("Received Request");
         if (_manager == null) return;
 
         if (_manager.TryGetAccessToken(out string token))

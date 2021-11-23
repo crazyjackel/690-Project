@@ -42,10 +42,6 @@ public class ClientUIOptions : MonoBehaviour, IClient
         _enjinNetworked.RequestTokenServerRPC(NetworkManager.Singleton.LocalClientId);
     }
 
-    public void CreateUser()
-    {
-        _enjin.playerWallet.CreateUser();
-    }
     private void OnNewToken(string obj)
     {
         playerWallet.StartSession(obj);

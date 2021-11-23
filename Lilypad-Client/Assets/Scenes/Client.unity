@@ -539,14 +539,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7463409734019448657, guid: 83964ee252469f94a892dd80dca013c3, type: 3}
-      propertyPath: NetworkConfig.NetworkPrefabs.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463409734019448657, guid: 83964ee252469f94a892dd80dca013c3, type: 3}
-      propertyPath: NetworkConfig.NetworkPrefabs.Array.data[0].Prefab
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7463409734019448658, guid: 83964ee252469f94a892dd80dca013c3, type: 3}
       propertyPath: m_RootOrder
       value: 2
