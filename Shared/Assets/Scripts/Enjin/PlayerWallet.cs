@@ -27,6 +27,27 @@ namespace Enjin.SDK.Core
         [SerializeField]
         private string Access_Token;
 
+        int PLAYER_IDENTITY_ID;
+        string PLAYER_ADDRESS;
+        string APP_LINK_CODE;
+
+        public void Login()
+        {
+            User player = Enjin.GetUser(UserName);
+
+            for(int i =0; i < player.identities.Length; i++)
+            {
+                Identity iden = player.identities[i];
+                Enjin.CreateIdentity(iden);
+                if(iden.app.id == APP_ID)
+                {
+                    PLAYER_IDENTITY_ID = iden.id;
+                    PLAYER_ADDRESS = iden.wallet.ethAddress;
+                    APP_LINK_CODE = iden.linkingCode;
+                }
+            }
+        }
+
         public void StartSession(string AccessToken)
         {
             if (Enjin.LoginState != LoginState.VALID || Enjin.AccessToken != AccessToken)
@@ -36,7 +57,6 @@ namespace Enjin.SDK.Core
                 Access_Token = AccessToken;
             }
         }
-
         public bool CreateUser()
         {
             try
@@ -49,17 +69,14 @@ namespace Enjin.SDK.Core
             }
             return true;
         }
-
         public void SetUser(string username)
         {
             UserName = username;
         }
-
         public IObservable<Texture2D> RequestLinkQRCode()
         {
             return Observable.FromCoroutine<Texture2D>((observer, cancellationToken) => GetTexture(UserName, observer, cancellationToken));
         }
-
         IEnumerator GetTexture(string username, IObserver<Texture2D> observer, CancellationToken cancellationToken)
         {
             User userInfo = null;

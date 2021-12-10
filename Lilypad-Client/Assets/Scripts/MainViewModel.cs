@@ -22,6 +22,9 @@ public class MainViewModel : ViewModel<MainViewModel>
     private ReactiveCommand _createCommand;
     public ReactiveCommand CreateCommand => _createCommand;
 
+    private ReactiveCommand _pingCommand;
+    public ReactiveCommand PingCommand => _pingCommand;
+
     private ReactiveProperty<string> _connectAddress = new ReactiveProperty<string>("127.0.0.1");
     public ReactiveProperty<string> ConnectAddress => _connectAddress;
 
@@ -49,13 +52,30 @@ public class MainViewModel : ViewModel<MainViewModel>
     private ReactiveProperty<string> _accessToken = new ReactiveProperty<string>();
     private ClientEnjinManager _enjin => _enjinProp.Value;
     private ReactiveProperty<ClientEnjinManager> _enjinProp = new ReactiveProperty<ClientEnjinManager>();
+    private ReactiveProperty<bool> _isConnected = new ReactiveProperty<bool>(false);
 
 
 
     public override void OnInitialization()
     {
-        _connectCommand = new ReactiveCommand(_networkProp.CombineLatest(_transportProp, _clientProp, (x, y, z) => x && y && z));
+        _enjinProp.Where(x => x != null).Subscribe(cem =>
+        {
+            cem.isConnected.Subscribe(ic =>
+            {
+                _isConnected.Value = ic;
+                if (ic) cem.UpdateAccessToken();
+            });
 
+            cem.AccessToken.Subscribe(at =>
+            {
+                _accessToken.Value = at;
+            });
+        });
+
+        
+
+
+        _connectCommand = new ReactiveCommand(_networkProp.CombineLatest(_transportProp, _clientProp, (x, y, z) => x && y && z));
         _connectCommand.Subscribe(_ =>
         {
             _transport.ConnectPort = _connectPort.Value;
@@ -63,24 +83,9 @@ public class MainViewModel : ViewModel<MainViewModel>
             _clientPortal.Connect(_network);
         });
 
-
-        _enjinProp.Where(x => x != null).Subscribe(x =>
-        {
-            x.isConnected.Subscribe(y =>
-            {
-                if(y) x.UpdateAccessToken();
-            });
-
-            x.AccessToken.Subscribe(y =>
-            {
-                _accessToken.Value = y;
-            });
-        });
-
         _loginCommand = new ReactiveCommand(
             _enjinProp
             .CombineLatest(_userName, _accessToken, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && (tk != null) && (tk != "")));
-
         _loginCommand.Subscribe(_ =>
         {
             _enjin.Login(_userName.Value).Subscribe(x =>
@@ -89,23 +94,19 @@ public class MainViewModel : ViewModel<MainViewModel>
             });
         });
 
+        _pingCommand = new ReactiveCommand(_isConnected);
+        _pingCommand.Subscribe(_ =>
+        {
+            _enjin.PingServer();
+        });
+
 
         _createCommand = new ReactiveCommand(
             _enjinProp
             .CombineLatest(_userName, _accessToken, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && (tk != null) && (tk != "")));
-
         _createCommand.Subscribe(_ =>
         {
             _enjin.CreateUser(_userName.Value);
-        });
-
-        _userName.Subscribe(x =>
-        {
-            Debug.Log(x);
-        });
-        _accessToken.Subscribe(x =>
-        {
-            Debug.Log(x);
         });
     }
 

@@ -62,7 +62,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.multiplayer.mlapi": {
-      "version": "file:C:/Users/Jack/Downloads/com.unity.multiplayer.mlapi-0.1.0 (1).tgz",
+      "version": "file:C:\\Users\\Jack\\Downloads\\com.unity.multiplayer.mlapi-0.1.0 (1).tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {

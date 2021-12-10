@@ -16,7 +16,8 @@ namespace Enjin.SDK.Core {
             {
                 playerWallet.StartSession(AccessToken.Value);
                 playerWallet.SetUser(userName);
-                return playerWallet.RequestLinkQRCode();
+                playerWallet.Login();
+                return playerWallet.QRCode.AsObservable();
             }
             return Observable.Empty<Texture2D>();
         }
@@ -35,7 +36,14 @@ namespace Enjin.SDK.Core {
         {
             if (_enjinManagerNetworked == null) return;
             Debug.Log("Requesting Update");
-            _enjinManagerNetworked.RequestTokenServerRPC(_network.LocalClientId);
+            //_enjinManagerNetworked.RequestTokenServerRPC(_network.LocalClientId);
+        }
+
+        public void PingServer()
+        {
+            if (_enjinManagerNetworked == null) return;
+            Debug.Log("Ping");
+            _enjinManagerNetworked.PingServerRpc(_network.LocalClientId);
         }
     }
 }

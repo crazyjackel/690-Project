@@ -13,33 +13,28 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
 
     private SharedNetworkPortal _portal;
 
-  
-    [ServerRpc(RequireOwnership =false)]
-    public void RequestTokenServerRPC(ulong clientID)
+    public NetworkVariableString AccessToken = new NetworkVariableString(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly,SendTickrate = 0 });
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void PingServerRpc(ulong clientID)
     {
-        Debug.Log("Received Request");
-        if (_manager == null) return;
+        Debug.Log("Received Ping");
 
-        if (_manager.TryGetAccessToken(out string token))
+        ClientRpcParams para = new ClientRpcParams
         {
-
-            ClientRpcParams clientRpcParams = new ClientRpcParams
+            Send = new ClientRpcSendParams
             {
-                Send = new ClientRpcSendParams
-                {
-                    TargetClientIds = new ulong[] { clientID }
-                }
-            };
-
-            NotifyTokenUpdateClientRPC(token, clientRpcParams);
-        }
+                TargetClientIds = new ulong[] { clientID }
+            }
+        };
+        PongClientRpc(para);
     }
 
     [ClientRpc]
-    public void NotifyTokenUpdateClientRPC(string newToken, ClientRpcParams RPCparams = default)
+    public void PongClientRpc(ClientRpcParams clientRpcParams = default)
     {
-        if (NetworkManager.Singleton.IsServer || _manager == null) return;
-        _manager.SetToken(newToken);
+        Debug.Log("Pong");
     }
 
     private void OnEnable()

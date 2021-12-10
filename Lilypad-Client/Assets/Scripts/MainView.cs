@@ -13,16 +13,29 @@ public class MainView : View<MainViewModel>
         Button ConnectButton = Root.Q<Button>("Connect_Button");
         Button LoginButton = Root.Q<Button>("Login_Button");
         Button CreateButton = Root.Q<Button>("Create_Button");
+        Button PingServer = Root.Q<Button>("Ping_Button");
         TextField IP = Root.Q<TextField>("IP_Textfield");
         TextField Port = Root.Q<TextField>("Port_Textfield");
         TextField UserName = Root.Q<TextField>("User_Textfield");
+        VisualElement image = Root.Q<VisualElement>("Image_Texture");
 
+
+        viewModel.QRCode.BindTo(x =>
+        {
+            if (x != null)
+            {
+                image.style.backgroundImage = x;
+                image.style.width = x.width;
+                image.style.height = x.height;
+            }
+        }).AddTo(disposable);
         //Bind Debug Text to Document
         viewModel.DebugText.BindTo(x => simpleLabel.text = x).AddTo(disposable);
 
         ConnectButton.BindToClick(viewModel.ConnectCommand).AddTo(disposable);
         LoginButton.BindToClick(viewModel.LoginCommand).AddTo(disposable);
         CreateButton.BindToClick(viewModel.CreateCommand).AddTo(disposable);
+        PingServer.BindToClick(viewModel.PingCommand).AddTo(disposable);
 
         IP.BindToTextLabel(viewModel.ConnectAddress).AddTo(disposable);
         Port.BindToTextLabel(viewModel.ConnectPort, (newVal, oldVal) =>

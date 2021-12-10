@@ -6,6 +6,7 @@
                 <ui:TextField picking-mode="Ignore" label="IP Address" value="127.0.0.1" text="127.0.0.1" password="false" name="IP_Textfield" />
                 <ui:TextField picking-mode="Ignore" label="Port" value="7777" text="7777" password="false" name="Port_Textfield" />
                 <ui:Button text="Connect" display-tooltip-when-elided="true" name="Connect_Button" />
+                <ui:Button text="Ping" display-tooltip-when-elided="true" name="Ping_Button" />
             </ui:IMGUIContainer>
             <ui:IMGUIContainer name="IMGUIContainer" style="width: 50%; justify-content: center;">
                 <ui:TextField picking-mode="Ignore" label="User Name" password="false" is-delayed="false" name="User_Textfield" />
@@ -25,7 +26,7 @@
             <ui:VisualElement class="top-bar-icon" style="width: 5%; height: 5%; border-left-color: rgb(65, 65, 65); border-right-color: rgb(65, 65, 65); border-top-color: rgb(65, 65, 65); border-bottom-color: rgb(65, 65, 65);">
                 <ui:Button display-tooltip-when-elided="true" enable-rich-text="false" class="top-bar-button" style="border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgb(65, 65, 65); background-image: url(&apos;/Assets/Textures/X.png&apos;); -unity-background-scale-mode: stretch-to-fill; -unity-background-image-tint-color: rgb(188, 188, 188); width: 90%; height: 90%;" />
             </ui:VisualElement>
-            <ui:VisualElement name="Image" style="width: 1%; height: 95%;">
+            <ui:VisualElement name="QR_Image" style="width: 1%; height: 95%;">
                 <ui:VisualElement name="Image_Texture" style="width: 0; height: 0; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);" />
             </ui:VisualElement>
         </ui:VisualElement>

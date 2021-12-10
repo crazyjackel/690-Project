@@ -39,7 +39,7 @@ public class ClientUIOptions : MonoBehaviour, IClient
     {
         if (_enjinNetworked == null) return;
 
-        _enjinNetworked.RequestTokenServerRPC(NetworkManager.Singleton.LocalClientId);
+        //_enjinNetworked.RequestTokenServerRPC(NetworkManager.Singleton.LocalClientId);
     }
 
     private void OnNewToken(string obj)

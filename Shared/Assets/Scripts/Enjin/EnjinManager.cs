@@ -13,15 +13,12 @@ namespace Enjin.SDK.Core
 {
     public abstract class EnjinManager : MonoBehaviour, IClient, IProvider, Initializeable
     {
-        //protected EnjinManagerNetworked _enjinManagerNetworked;
-
+        //Enjin Manager Networks Variables
         protected EnjinManagerNetworked _enjinManagerNetworked => _enjinManagerNetworkedProp.Value;
         private ReactiveProperty<EnjinManagerNetworked> _enjinManagerNetworkedProp = new ReactiveProperty<EnjinManagerNetworked>();
         public IReadOnlyReactiveProperty<bool> isConnected;
         
-
         protected NetworkManager _network;
-
         private bool initialized = false;
 
         public ReactiveProperty<string> AccessToken { get; protected set; } = new ReactiveProperty<string>();
@@ -42,21 +39,20 @@ namespace Enjin.SDK.Core
             DepInjector.Remove(this);
         }
 
-        public void SetToken(string Token)
-        {
-            AccessToken.Value = Token;
-        }
-        public virtual bool TryGetAccessToken(out string token)
-        {
-            token = "";
-            return false;
-        }
-
         public virtual void NewProviderAvailable(IProvider newProvider)
         {
             DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
-            DepInjector.MapProvider(newProvider, _enjinManagerNetworkedProp);
+            if(DepInjector.MapProvider(newProvider, _enjinManagerNetworkedProp))
+            {
+                _enjinManagerNetworkedProp.Value.AccessToken.OnValueChanged += TokenChange;
+            }
         }
+
+        private void TokenChange(string previousValue, string newValue)
+        {
+            AccessToken.Value = newValue;
+        }
+
         public virtual void NewProviderFullyInstalled(IProvider newProvider)
         {
             TryInitialize(false);
@@ -92,87 +88,3 @@ namespace Enjin.SDK.Core
         public virtual void Init() { }
     }
 }
-/*
-public class EnjinManager : MonoBehaviour
-{
-    public static EnjinManager Singleton;
-    /// <summary>
-    /// Opens When Start, Close Never
-    /// </summary>
-    public static QueuedGate<EnjinManager> OnStart = new QueuedGate<EnjinManager>();
-    /// <summary>
-    /// Opens when Networked Counterpart Opens, Closes when Networked Counterpart Closes or Disconnects
-    /// </summary>
-    public static QueuedGate OnInit = new QueuedGate();
-
-    private bool IsStartup = false;
-
-    public ServerWallet serverWallet;
-
-    public Action<string> OnAccessTokenUpdate;
-
-    public CoroutineTimer RefreshPlatformTimer;
-
-    private void Awake()
-    {
-        if (Singleton != null && Singleton != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Singleton = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public void Start()
-    {
-        EnjinManagerNetworked.OnInit.AddListener(network =>
-        {
-            OnInit.Open();
-        });
-        OnStart.Open(this);
-    }
-
-
-    public bool TryGetAccessToken(out string token)
-    {
-        if(NetworkManager.Singleton.IsServer && serverWallet != null)
-        {
-            token = serverWallet.GetAccessToken();
-            return true;
-        }
-        token = "";
-        return false;
-    }
-
-    public void OnEnable()
-    {
-        OnInit.AddListener(() =>
-        {
-            if (NetworkManager.Singleton.IsServer && !IsStartup)
-            {
-                
-                IsStartup = true;
-            }
-        });
-    }
-
-    public void UpdatePlatform()
-    {
-        Debug.Log("Updating Platform... ");
-        EnjinManagerNetworked.OnInit.AddListener(network =>
-        {
-            serverWallet?.StartPlatform();
-            if (NetworkManager.Singleton.IsServer)
-            {
-                network.NotifyTokenUpdateClientRPC(serverWallet.GetAccessToken());
-            }
-        });
-    }
-
-    private void OnDisable()
-    {
-        IsStartup = false;
-    }
-}
-*/

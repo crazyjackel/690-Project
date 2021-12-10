@@ -14,16 +14,12 @@ namespace Enjin.SDK.Core
         [SerializeField] int APP_ID;
 
         private string Access_Token;
-        public void StartPlatform()
+        public string StartPlatform()
         {
             //Prevent Multiple Instancing of Starting Platform to make Startup Thread-Safe
             Enjin.StartPlatform(PLATFORM_URL, APP_ID, APP_SECRET);
             Debug.Log($"Started Platform: {Enjin.AccessToken}");
             Access_Token = Enjin.AccessToken;
-        }
-
-        public string GetAccessToken()
-        {
             return Access_Token;
         }
     }
