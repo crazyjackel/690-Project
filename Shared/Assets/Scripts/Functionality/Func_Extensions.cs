@@ -22,6 +22,11 @@ public static class Func_Extensions
         return source.ObserveEveryValueChanged(x => x.Value).Subscribe(doAct);
     }
 
+    public static IDisposable BindTo<T>(this ReactiveProperty<T> source, ReactiveProperty<T> connect)
+    {
+        return source.ObserveEveryValueChanged(x => x.Value).Subscribe(x => connect.Value = x);
+    }
+
     public static IDisposable BindToClick(this Button button, ReactiveCommand command)
     {
         var d1 = command.CanExecute.SubscribeWithState(button, (x, s) => s.SetEnabled(x));

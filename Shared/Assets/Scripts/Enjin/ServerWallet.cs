@@ -10,8 +10,12 @@ namespace Enjin.SDK.Core
     public class ServerWallet : ScriptableObject
     {
         [SerializeField] string PLATFORM_URL;
+        public string PLATFORMURL => PLATFORM_URL;
         [SerializeField] string APP_SECRET;
         [SerializeField] int APP_ID;
+        public int APPID => APP_ID;
+
+        
 
         private string Access_Token;
         public string StartPlatform()

@@ -44,7 +44,7 @@ public class ClientUIOptions : MonoBehaviour, IClient
 
     private void OnNewToken(string obj)
     {
-        playerWallet.StartSession(obj);
+        //playerWallet.StartSession(obj);
     }
 
     private void OnEnable()
@@ -65,10 +65,7 @@ public class ClientUIOptions : MonoBehaviour, IClient
         DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
         DepInjector.MapProvider(newProvider, ref _clientPortal);
         DepInjector.MapProvider(newProvider, ref _enjinNetworked);
-        if(DepInjector.MapProvider(newProvider, ref _enjin))
-        {
-            _enjin.AccessToken.Subscribe(OnNewToken);
-        }
+        DepInjector.MapProvider(newProvider, ref _enjin);
     }
 
     public void ProviderRemoved(IProvider removeProvider)

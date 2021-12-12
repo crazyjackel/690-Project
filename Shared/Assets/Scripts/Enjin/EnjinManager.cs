@@ -21,7 +21,7 @@ namespace Enjin.SDK.Core
         protected NetworkManager _network;
         private bool initialized = false;
 
-        public ReactiveProperty<string> AccessToken { get; protected set; } = new ReactiveProperty<string>();
+        //public ReactiveProperty<string> AccessToken { get; protected set; } = new ReactiveProperty<string>();
 
         public virtual void OnEnable()
         {
@@ -42,15 +42,7 @@ namespace Enjin.SDK.Core
         public virtual void NewProviderAvailable(IProvider newProvider)
         {
             DepInjector.MapProvider<NetworkManagerProvider, NetworkManager>(newProvider, ref _network);
-            if(DepInjector.MapProvider(newProvider, _enjinManagerNetworkedProp))
-            {
-                _enjinManagerNetworkedProp.Value.AccessToken.OnValueChanged += TokenChange;
-            }
-        }
-
-        private void TokenChange(string previousValue, string newValue)
-        {
-            AccessToken.Value = newValue;
+            DepInjector.MapProvider(newProvider, _enjinManagerNetworkedProp);
         }
 
         public virtual void NewProviderFullyInstalled(IProvider newProvider)

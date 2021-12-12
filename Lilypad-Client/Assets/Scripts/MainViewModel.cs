@@ -49,26 +49,20 @@ public class MainViewModel : ViewModel<MainViewModel>
     private UNetTransport _transport => _transportProp.Value;
     private ReactiveProperty<UNetTransport> _transportProp = new ReactiveProperty<UNetTransport>();
 
-    private ReactiveProperty<string> _accessToken = new ReactiveProperty<string>();
     private ClientEnjinManager _enjin => _enjinProp.Value;
     private ReactiveProperty<ClientEnjinManager> _enjinProp = new ReactiveProperty<ClientEnjinManager>();
     private ReactiveProperty<bool> _isConnected = new ReactiveProperty<bool>(false);
-
-
 
     public override void OnInitialization()
     {
         _enjinProp.Where(x => x != null).Subscribe(cem =>
         {
+            cem.QRCode.BindTo(_qrCode);
+
             cem.isConnected.Subscribe(ic =>
             {
                 _isConnected.Value = ic;
                 if (ic) cem.UpdateAccessToken();
-            });
-
-            cem.AccessToken.Subscribe(at =>
-            {
-                _accessToken.Value = at;
             });
         });
 
@@ -85,13 +79,10 @@ public class MainViewModel : ViewModel<MainViewModel>
 
         _loginCommand = new ReactiveCommand(
             _enjinProp
-            .CombineLatest(_userName, _accessToken, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && (tk != null) && (tk != "")));
+            .CombineLatest(_userName, _isConnected, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && tk));
         _loginCommand.Subscribe(_ =>
         {
-            _enjin.Login(_userName.Value).Subscribe(x =>
-            {
-                _qrCode.Value = x;
-            });
+            _enjin.Login(_userName.Value);
         });
 
         _pingCommand = new ReactiveCommand(_isConnected);
@@ -103,7 +94,7 @@ public class MainViewModel : ViewModel<MainViewModel>
 
         _createCommand = new ReactiveCommand(
             _enjinProp
-            .CombineLatest(_userName, _accessToken, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && (tk != null) && (tk != "")));
+            .CombineLatest(_userName, _isConnected, (enj, us, tk) => (enj != null) && (us != null) && (us != "") && tk));
         _createCommand.Subscribe(_ =>
         {
             _enjin.CreateUser(_userName.Value);

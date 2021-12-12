@@ -319,7 +319,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7bd88e5898903b4b81b638f84878011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWallet: {fileID: 11400000, guid: 4db2a53a17df64b40ba700a5470352f2, type: 2}
+  _platformURL: https://kovan.cloud.enjin.io/
+  _appID: 5346
+  _access_Token: 
+  _playerIdentityID: 0
+  _playerETHAddress: 
+  _playerLinkCode: 
+  QRCode:
+    value: {fileID: 0}
 --- !u!4 &612070974
 Transform:
   m_ObjectHideFlags: 0

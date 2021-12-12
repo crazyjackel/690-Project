@@ -13,9 +13,6 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
 
     private SharedNetworkPortal _portal;
 
-    public NetworkVariableString AccessToken = new NetworkVariableString(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly,SendTickrate = 0 });
-
-
     [ServerRpc(RequireOwnership = false)]
     public void PingServerRpc(ulong clientID)
     {
@@ -31,10 +28,58 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
         PongClientRpc(para);
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void LoginServerRpc(ulong clientId, string username)
+    {
+        Debug.Log($"Received Login Request from {clientId}:{username}");
+
+        if(_manager is ServerEnjinManager _serverManager)
+        {
+            _serverManager
+                .Login(
+                    clientId,
+                    username,
+                    () =>
+                    {
+                        ClientRpcParams para = new ClientRpcParams
+                        {
+                            Send = new ClientRpcSendParams
+                            {
+                                TargetClientIds = new ulong[] { clientId }
+                            }
+                        };
+                        LoginSuccessClientRpc(para);
+                    },
+                    (x) =>
+                    {
+                        ClientRpcParams para = new ClientRpcParams
+                        {
+                            Send = new ClientRpcSendParams
+                            {
+                                TargetClientIds = new ulong[] { clientId }
+                            }
+                        };
+                        ErrorClientRpc($"Error Logging in. Code: {x}", para);
+                    });
+        }
+    }
+
     [ClientRpc]
     public void PongClientRpc(ClientRpcParams clientRpcParams = default)
     {
         Debug.Log("Pong");
+    }
+
+    [ClientRpc]
+    public void LoginSuccessClientRpc(ClientRpcParams clientRpcParams = default)
+    {
+        Debug.Log("Login Successful");
+    }
+
+    [ClientRpc]
+    public void ErrorClientRpc(string errorDetails, ClientRpcParams clientRpcParams = default)
+    {
+        Debug.Log(errorDetails);   
     }
 
     private void OnEnable()
