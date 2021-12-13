@@ -14,19 +14,28 @@ public class MainView : View<MainViewModel>
         Button LoginButton = Root.Q<Button>("Login_Button");
         Button CreateButton = Root.Q<Button>("Create_Button");
         Button PingServer = Root.Q<Button>("Ping_Button");
+        Button closeTab = Root.Q<Button>("Tab_Button");
         TextField IP = Root.Q<TextField>("IP_Textfield");
         TextField Port = Root.Q<TextField>("Port_Textfield");
         TextField UserName = Root.Q<TextField>("User_Textfield");
         VisualElement image = Root.Q<VisualElement>("Image_Texture");
+        VisualElement container = Root.Q<VisualElement>("Container");
 
+        container.visible = false;
+
+        closeTab.RegisterCallback<ClickEvent>(evt => container.visible = false);
+        disposable.Add(
+            Disposable.Create(() => closeTab.UnregisterCallback<ClickEvent>(evt => container.visible = false)));
+        
 
         viewModel.QRCode.BindTo(x =>
         {
             if (x != null)
             {
                 image.style.backgroundImage = x;
-                image.style.width = x.width;
-                image.style.height = x.height;
+                image.style.width = 300;
+                image.style.height = 300;
+                container.visible = true;
             }
         }).AddTo(disposable);
         //Bind Debug Text to Document

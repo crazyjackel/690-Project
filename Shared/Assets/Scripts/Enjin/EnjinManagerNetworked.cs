@@ -2,10 +2,11 @@ using Enjin.SDK.Core;
 using MLAPI;
 using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UniRx;
 
 public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
 {
@@ -13,6 +14,7 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
 
     private SharedNetworkPortal _portal;
 
+    #region Server RPCs
     [ServerRpc(RequireOwnership = false)]
     public void PingServerRpc(ulong clientID)
     {
@@ -29,11 +31,46 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
     }
 
     [ServerRpc(RequireOwnership = false)]
+    public void RegisterServerRpc(ulong clientId, string username)
+    {
+        Debug.Log($"Received Register Request from {clientId}:{username}");
+
+        if (_manager is ServerEnjinManager _serverManager)
+        {
+            _serverManager
+                .Register(
+                    username,
+                    x =>
+                    {
+                        ClientRpcParams para = new ClientRpcParams
+                        {
+                            Send = new ClientRpcSendParams
+                            {
+                                TargetClientIds = new ulong[] { clientId }
+                            }
+                        };
+                        CreateSuccessClientRpc(x, para);
+                    },
+                    (x, y) =>
+                    {
+                        ClientRpcParams para = new ClientRpcParams
+                        {
+                            Send = new ClientRpcSendParams
+                            {
+                                TargetClientIds = new ulong[] { clientId }
+                            }
+                        };
+                        ErrorClientRpc($"Error Registering. Code: {x}; Details : {y}", para);
+                    });
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
     public void LoginServerRpc(ulong clientId, string username)
     {
         Debug.Log($"Received Login Request from {clientId}:{username}");
 
-        if(_manager is ServerEnjinManager _serverManager)
+        if (_manager is ServerEnjinManager _serverManager)
         {
             _serverManager
                 .Login(
@@ -50,7 +87,7 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
                         };
                         LoginSuccessClientRpc(para);
                     },
-                    (x) =>
+                    (x, y) =>
                     {
                         ClientRpcParams para = new ClientRpcParams
                         {
@@ -59,59 +96,70 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
                                 TargetClientIds = new ulong[] { clientId }
                             }
                         };
-                        ErrorClientRpc($"Error Logging in. Code: {x}", para);
+                        ErrorClientRpc($"Error Logging in. Code: {x}; Details : {y}", para);
                     });
         }
     }
+    #endregion
 
+    #region Client RPCs
+
+    public event Action OnPong;
     [ClientRpc]
     public void PongClientRpc(ClientRpcParams clientRpcParams = default)
     {
         Debug.Log("Pong");
     }
 
+    public event Action OnLogicSuccess;
     [ClientRpc]
     public void LoginSuccessClientRpc(ClientRpcParams clientRpcParams = default)
     {
         Debug.Log("Login Successful");
     }
 
+    public event Action<string> OnCreateSuccess;
+    [ClientRpc]
+    public void CreateSuccessClientRpc(string QrCode, ClientRpcParams clientRpcParams = default)
+    {
+        OnCreateSuccess?.Invoke(QrCode);
+    }
+
+    public event Action<string> OnError;
     [ClientRpc]
     public void ErrorClientRpc(string errorDetails, ClientRpcParams clientRpcParams = default)
     {
-        Debug.Log(errorDetails);   
+        Debug.Log(errorDetails);
     }
+    #endregion
 
+    #region Management
     private void OnEnable()
     {
         DepInjector.AddProvider(this);
     }
-
     private void OnDisable()
     {
         DepInjector.Remove(this);
     }
-
     private void OnDestroy()
     {
         DepInjector.Remove(this);
     }
-
     public void NewProviderAvailable(IProvider newProvider)
     {
         DepInjector.MapProvider(newProvider, ref _manager);
         DepInjector.MapProvider(newProvider, ref _portal);
     }
-
     public void NewProviderFullyInstalled(IProvider newProvider)
     {
     }
-
     public void ProviderRemoved(IProvider removeProvider)
     {
         DepInjector.UnmapProvider(removeProvider, ref _manager);
         DepInjector.UnmapProvider(removeProvider, ref _portal);
     }
+    #endregion
 }
 
 /*

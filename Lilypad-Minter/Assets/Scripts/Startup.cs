@@ -61,4 +61,9 @@ public class Startup : MonoBehaviour, IClient, Initializeable
         DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
         DepInjector.UnmapProvider(removeProvider, ref _portal);
     }
+
+    public void DeInitialize()
+    {
+        if(initialized) initialized = false;
+    }
 }

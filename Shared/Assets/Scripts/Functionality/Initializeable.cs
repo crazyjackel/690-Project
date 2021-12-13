@@ -7,4 +7,5 @@ public interface Initializeable
     bool CanInitialize();
     void TryInitialize(bool requireIntiailization = false);
     void Initialize();
+    void DeInitialize();
 }

@@ -51,10 +51,9 @@ namespace Enjin.SDK.Core
         }
         public virtual void ProviderRemoved(IProvider removeProvider)
         {
-            DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network);
-            if (DepInjector.UnmapProvider(removeProvider, _enjinManagerNetworkedProp))
+            if(DepInjector.UnmapProvider<NetworkManagerProvider, NetworkManager>(removeProvider, ref _network) || DepInjector.UnmapProvider(removeProvider, _enjinManagerNetworkedProp))
             {
-                OnNetworkLost();
+                DeInitialize();
             }
         }
 
@@ -76,7 +75,17 @@ namespace Enjin.SDK.Core
             Init();
         }
 
-        public virtual void OnNetworkLost() { }
-        public virtual void Init() { }
+        public void DeInitialize()
+        {
+            if (initialized)
+            {
+                initialized = false;
+                DeInit();
+            }
+        }
+        
+
+        protected virtual void DeInit() { }
+        protected virtual void Init() { }
     }
 }

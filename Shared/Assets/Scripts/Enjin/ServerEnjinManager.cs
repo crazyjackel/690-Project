@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UniRx;
 
 namespace Enjin.SDK.Core
 {
@@ -33,11 +34,12 @@ namespace Enjin.SDK.Core
                         true);
             StartCoroutine(RefreshPlatformTimer.Start());
         }
-        public override void OnNetworkLost()
+        protected override void DeInit()
         {
+            playerWallets.Clear();
             RefreshPlatformTimer?.Stop();
         }
-        public override void Init()
+        protected override void Init()
         {
             var clients = _network.ConnectedClientsList;
             _network.OnClientConnectedCallback += x => playerWallets.Add(x, new PlayerWallet());
@@ -50,35 +52,90 @@ namespace Enjin.SDK.Core
             
         }
 
-        public void Login(ulong clientId, string user, Action OnLogin, Action<ResponseCodes> OnFailure)
+        private void Register_Link(EnjinAsync.Response<User> resp, Action<string> OnRegister, Action<ResponseCodes, string> OnFailure, string FailMessage = "Link Code Not Found")
         {
-            Task.Run(async () =>
+            if (resp == null) return;
+            User player = resp.response;
+            var identity = player.identities.FirstOrDefault(x => x.app.id == serverWallet.APPID);
+            if (identity == null)
             {
-                var resp = await EnjinAsync.GetUser(user);
-                if(resp.code == ResponseCodes.SUCCESS)
+                OnFailure?.Invoke(ResponseCodes.INTERNAL, "Identity Not Found");
+                return;
+            }
+
+            if (identity.linkingCodeQr != "")
+            {
+                OnRegister?.Invoke(identity.linkingCodeQr);
+            }
+            else
+            {
+                OnFailure?.Invoke(ResponseCodes.INTERNAL, FailMessage);
+            }
+        }
+        public void Register(string user, Action<string> OnRegister, Action<ResponseCodes,string> OnFailure)
+        {
+            EnjinAsync.GetUserObservable(user).Subscribe(resp =>
+            {
+                //Case 1: User not Registered.
+                if(resp.code == ResponseCodes.NOTFOUND)
+                {
+                    //Okay this doesn't make sense much, but first request does not include Linking Code QR, so we have to get User after creating
+                    EnjinAsync.CreateUser(user).Subscribe(resp =>
+                    {
+                        EnjinAsync.GetUserObservable(user).Subscribe(resp =>
+                        {
+                            if (resp.code == ResponseCodes.SUCCESS)
+                            {
+                                Register_Link(resp, OnRegister, OnFailure);
+                            }
+                            else
+                            {
+                                OnFailure?.Invoke(resp.code, "Bad Response");
+                            }
+                        });
+                    });
+                }
+                //Case 2: User not Linked.
+                else if(resp.code == ResponseCodes.SUCCESS)
+                {
+                    Register_Link(resp, OnRegister, OnFailure, "User Already Registered");
+                }
+                //Case 3: Bad Send
+                else
+                {
+                    OnFailure?.Invoke(resp.code, "Bad Response");
+                }
+            });
+        }
+
+        public void Login(ulong clientId, string user, Action OnLogin, Action<ResponseCodes, string> OnFailure)
+        {
+            EnjinAsync.GetUserObservable(user).Subscribe(resp =>
+            {
+                if (resp.code == ResponseCodes.SUCCESS)
                 {
                     User player = resp.response;
                     var identity = player.identities.FirstOrDefault(x => x.app.id == serverWallet.APPID);
-                    if (identity == null) 
+                    if (identity == null)
                     {
-                        OnFailure(ResponseCodes.INTERNAL);
+                        OnFailure.Invoke(ResponseCodes.INTERNAL, "Identity Not Found");
                         return;
                     }
-                    if(playerWallets.TryGetValue(clientId, out PlayerWallet wallet))
+                    if (playerWallets.TryGetValue(clientId, out PlayerWallet wallet))
                     {
                         wallet.LoadFromIdentity(identity);
-                        OnLogin();
+                        OnLogin.Invoke();
                         return;
                     }
                     else
                     {
-                        OnFailure(ResponseCodes.INTERNAL);
+                        OnFailure.Invoke(ResponseCodes.INTERNAL, "Wallet Not Found on Server");
                         return;
                     }
                 }
                 else
                 {
-                    OnFailure(resp.code);
+                    OnFailure.Invoke(resp.code, "Bad Response");
                 }
             });
         }

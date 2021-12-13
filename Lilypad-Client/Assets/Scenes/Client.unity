@@ -325,6 +325,7 @@ MonoBehaviour:
   _playerIdentityID: 0
   _playerETHAddress: 
   _playerLinkCode: 
+  _playerLink: 
   QRCode:
     value: {fileID: 0}
 --- !u!4 &612070974

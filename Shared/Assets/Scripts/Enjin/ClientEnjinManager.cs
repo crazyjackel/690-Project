@@ -49,8 +49,8 @@ namespace Enjin.SDK.Core {
 
         public void CreateUser(string userName)
         {
-           /* Username = userName;
-            Enjin.CreatePlayer(Username);*/
+            if (_enjinManagerNetworked == null) return;
+            _enjinManagerNetworked.RegisterServerRpc(_network.LocalClientId, userName);
         }
 
 
@@ -71,6 +71,14 @@ namespace Enjin.SDK.Core {
             }
         }
 
+        protected override void Init()
+        {
+            _enjinManagerNetworked.OnCreateSuccess += LoadQRCode;
+        }
+        protected override void DeInit()
+        {
+             
+        }
 
         public void UpdateAccessToken()
         {
