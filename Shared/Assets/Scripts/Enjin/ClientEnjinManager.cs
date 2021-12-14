@@ -40,20 +40,28 @@ namespace Enjin.SDK.Core {
         public string Username { get; set; }
 
         public ReactiveProperty<Texture2D> QRCode = new ReactiveProperty<Texture2D>();
+        public ReactiveProperty<bool> isLogin = new ReactiveProperty<bool>(false);
 
         public void Login(string userName)
         {
             if (_enjinManagerNetworked == null) return;
             _enjinManagerNetworked.LoginServerRpc(_network.LocalClientId, userName);
         }
-
         public void CreateUser(string userName)
         {
             if (_enjinManagerNetworked == null) return;
             _enjinManagerNetworked.RegisterServerRpc(_network.LocalClientId, userName);
         }
-
-
+        public void PingServer()
+        {
+            if (_enjinManagerNetworked == null) return;
+            Debug.Log("Ping");
+            _enjinManagerNetworked.PingServerRpc(_network.LocalClientId);
+        }
+        public void MintItem()
+        {
+            _enjinManagerNetworked.MintItemServerRpc(_network.LocalClientId, "70000000000010dc", 1);
+        }
         public async void LoadQRCode(string _LinkCode)
         {
             UnityWebRequest www = UnityWebRequestTexture.GetTexture(_LinkCode);
@@ -74,10 +82,17 @@ namespace Enjin.SDK.Core {
         protected override void Init()
         {
             _enjinManagerNetworked.OnCreateSuccess += LoadQRCode;
+            _enjinManagerNetworked.OnLogicSuccess += OnLogicSuccess;
         }
+
+        private void OnLogicSuccess()
+        {
+            isLogin.Value = true;
+        }
+
         protected override void DeInit()
         {
-             
+            isLogin.Value = false;
         }
 
         public void UpdateAccessToken()
@@ -85,12 +100,6 @@ namespace Enjin.SDK.Core {
             if (_enjinManagerNetworked == null) return;
             Debug.Log("Requesting Update");
             //_enjinManagerNetworked.RequestTokenServerRPC(_network.LocalClientId);
-        }
-        public void PingServer()
-        {
-            if (_enjinManagerNetworked == null) return;
-            Debug.Log("Ping");
-            _enjinManagerNetworked.PingServerRpc(_network.LocalClientId);
         }
     }
 }

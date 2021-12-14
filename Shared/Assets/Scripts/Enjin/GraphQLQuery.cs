@@ -57,6 +57,7 @@ public class GraphQLQuery : GraphQuery
         details = details.Trim('\r');
         details = QuerySorter(details);
 
+        
         Query query = new Query { query = details };
         string jsonData = JsonUtility.ToJson(query);
 

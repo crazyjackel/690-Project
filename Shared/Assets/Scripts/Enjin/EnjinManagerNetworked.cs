@@ -29,6 +29,37 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
         };
         PongClientRpc(para);
     }
+    [ServerRpc(RequireOwnership = false)]
+    public void MintItemServerRpc(ulong clientId, string itemId, int value)
+    {
+        Debug.Log($"Received Mint Request from {clientId}:{itemId}");
+        if (_manager is ServerEnjinManager _serverManager)
+        {
+            _serverManager.MintOneItemToAddress(clientId, itemId, value,
+                () =>
+                {
+                    ClientRpcParams para = new ClientRpcParams
+                    {
+                        Send = new ClientRpcSendParams
+                        {
+                            TargetClientIds = new ulong[] { clientId }
+                        }
+                    };
+                    MintSuccessClientRpc(para);
+                },
+                (x, y) =>
+                {
+                    ClientRpcParams para = new ClientRpcParams
+                    {
+                        Send = new ClientRpcSendParams
+                        {
+                            TargetClientIds = new ulong[] { clientId }
+                        }
+                    };
+                    ErrorClientRpc($"Error Registering. Code: {x}; Details : {y}", para);
+                });
+        }    
+    }
 
     [ServerRpc(RequireOwnership = false)]
     public void RegisterServerRpc(ulong clientId, string username)
@@ -109,6 +140,7 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
     public void PongClientRpc(ClientRpcParams clientRpcParams = default)
     {
         Debug.Log("Pong");
+        OnPong?.Invoke();
     }
 
     public event Action OnLogicSuccess;
@@ -116,6 +148,7 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
     public void LoginSuccessClientRpc(ClientRpcParams clientRpcParams = default)
     {
         Debug.Log("Login Successful");
+        OnLogicSuccess?.Invoke();
     }
 
     public event Action<string> OnCreateSuccess;
@@ -125,11 +158,19 @@ public class EnjinManagerNetworked : NetworkBehaviour, IClient, IProvider
         OnCreateSuccess?.Invoke(QrCode);
     }
 
+    public event Action OnMintSuccess;
+    [ClientRpc]
+    public void MintSuccessClientRpc (ClientRpcParams clientRpcParams = default)
+    {
+        OnMintSuccess?.Invoke();
+    }
+
     public event Action<string> OnError;
     [ClientRpc]
     public void ErrorClientRpc(string errorDetails, ClientRpcParams clientRpcParams = default)
     {
         Debug.Log(errorDetails);
+        OnError?.Invoke(errorDetails);
     }
     #endregion
 

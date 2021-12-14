@@ -13,6 +13,7 @@ public class MainView : View<MainViewModel>
         Button ConnectButton = Root.Q<Button>("Connect_Button");
         Button LoginButton = Root.Q<Button>("Login_Button");
         Button CreateButton = Root.Q<Button>("Create_Button");
+        Button MintButton = Root.Q<Button>("Mint_Button");
         Button PingServer = Root.Q<Button>("Ping_Button");
         Button closeTab = Root.Q<Button>("Tab_Button");
         TextField IP = Root.Q<TextField>("IP_Textfield");
@@ -41,6 +42,7 @@ public class MainView : View<MainViewModel>
         //Bind Debug Text to Document
         viewModel.DebugText.BindTo(x => simpleLabel.text = x).AddTo(disposable);
 
+        MintButton.BindToClick(viewModel.MintCommand).AddTo(disposable);
         ConnectButton.BindToClick(viewModel.ConnectCommand).AddTo(disposable);
         LoginButton.BindToClick(viewModel.LoginCommand).AddTo(disposable);
         CreateButton.BindToClick(viewModel.CreateCommand).AddTo(disposable);

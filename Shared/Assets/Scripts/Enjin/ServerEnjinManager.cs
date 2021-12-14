@@ -52,28 +52,27 @@ namespace Enjin.SDK.Core
             
         }
 
-        private void Register_Link(EnjinAsync.Response<User> resp, Action<string> OnRegister, Action<ResponseCodes, string> OnFailure, string FailMessage = "Link Code Not Found")
+  
+        public void MintOneItemToAddress(ulong clientID, string itemId, int value, Action OnMintSuccessful, Action<ResponseCodes, string> OnFailure)
         {
-            if (resp == null) return;
-            User player = resp.response;
-            var identity = player.identities.FirstOrDefault(x => x.app.id == serverWallet.APPID);
-            if (identity == null)
-            {
-                OnFailure?.Invoke(ResponseCodes.INTERNAL, "Identity Not Found");
-                return;
-            }
-
-            if (identity.linkingCodeQr != "")
-            {
-                OnRegister?.Invoke(identity.linkingCodeQr);
-            }
-            else
-            {
-                OnFailure?.Invoke(ResponseCodes.INTERNAL, FailMessage);
+            if (playerWallets.TryGetValue(clientID, out PlayerWallet wallet) && wallet.IsLoaded) {
+                EnjinAsync.MintFungibleToken(serverWallet.AppID, serverWallet.DeveloperID, wallet.PlayerETHAddress, itemId, value).Subscribe(resp =>
+                {
+                    if (resp.code == ResponseCodes.SUCCESS)
+                    {
+                        OnMintSuccessful?.Invoke();
+                    }
+                    else
+                    {
+                        OnFailure?.Invoke(resp.code, "Bad Response");
+                    }
+                });
             }
         }
+
         public void Register(string user, Action<string> OnRegister, Action<ResponseCodes,string> OnFailure)
         {
+
             EnjinAsync.GetUserObservable(user).Subscribe(resp =>
             {
                 //Case 1: User not Registered.
@@ -107,6 +106,27 @@ namespace Enjin.SDK.Core
                 }
             });
         }
+        private void Register_Link(EnjinAsync.Response<User> resp, Action<string> OnRegister, Action<ResponseCodes, string> OnFailure, string FailMessage = "Link Code Not Found")
+        {
+            if (resp == null) return;
+            User player = resp.response;
+            var identity = player.identities.FirstOrDefault(x => x.app.id == serverWallet.AppID);
+            if (identity == null)
+            {
+                OnFailure?.Invoke(ResponseCodes.INTERNAL, "Identity Not Found");
+                return;
+            }
+
+            if (identity.linkingCodeQr != "")
+            {
+                OnRegister?.Invoke(identity.linkingCodeQr);
+            }
+            else
+            {
+                OnFailure?.Invoke(ResponseCodes.INTERNAL, FailMessage);
+            }
+        }
+
 
         public void Login(ulong clientId, string user, Action OnLogin, Action<ResponseCodes, string> OnFailure)
         {
@@ -115,7 +135,7 @@ namespace Enjin.SDK.Core
                 if (resp.code == ResponseCodes.SUCCESS)
                 {
                     User player = resp.response;
-                    var identity = player.identities.FirstOrDefault(x => x.app.id == serverWallet.APPID);
+                    var identity = player.identities.FirstOrDefault(x => x.app.id == serverWallet.AppID);
                     if (identity == null)
                     {
                         OnFailure.Invoke(ResponseCodes.INTERNAL, "Identity Not Found");

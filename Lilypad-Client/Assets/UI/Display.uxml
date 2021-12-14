@@ -11,7 +11,8 @@
             <ui:IMGUIContainer name="IMGUIContainer" style="width: 50%; justify-content: center;">
                 <ui:TextField picking-mode="Ignore" label="User Name" password="false" is-delayed="false" name="User_Textfield" />
                 <ui:Button text="Login" display-tooltip-when-elided="true" name="Login_Button" />
-                <ui:Button text="Create" display-tooltip-when-elided="true" name="Create_Button" />
+                <ui:Button text="Register" display-tooltip-when-elided="true" name="Create_Button" />
+                <ui:Button text="Give yourself a Frog" display-tooltip-when-elided="true" name="Mint_Button" />
             </ui:IMGUIContainer>
         </ui:IMGUIContainer>
         <ui:IMGUIContainer class="lower-dock">

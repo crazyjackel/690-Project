@@ -25,6 +25,9 @@ public class MainViewModel : ViewModel<MainViewModel>
     private ReactiveCommand _pingCommand;
     public ReactiveCommand PingCommand => _pingCommand;
 
+    private ReactiveCommand _mintCommand;
+    public ReactiveCommand MintCommand => _mintCommand;
+
     private ReactiveProperty<string> _connectAddress = new ReactiveProperty<string>("127.0.0.1");
     public ReactiveProperty<string> ConnectAddress => _connectAddress;
 
@@ -52,12 +55,15 @@ public class MainViewModel : ViewModel<MainViewModel>
     private ClientEnjinManager _enjin => _enjinProp.Value;
     private ReactiveProperty<ClientEnjinManager> _enjinProp = new ReactiveProperty<ClientEnjinManager>();
     private ReactiveProperty<bool> _isConnected = new ReactiveProperty<bool>(false);
+    private ReactiveProperty<bool> _isLogin = new ReactiveProperty<bool>(false);
 
     public override void OnInitialization()
     {
         _enjinProp.Where(x => x != null).Subscribe(cem =>
         {
             cem.QRCode.BindTo(_qrCode);
+
+            cem.isLogin.BindTo(_isLogin);
 
             cem.isConnected.Subscribe(ic =>
             {
@@ -91,6 +97,11 @@ public class MainViewModel : ViewModel<MainViewModel>
             _enjin.PingServer();
         });
 
+        _mintCommand = new ReactiveCommand(_isLogin);
+        _mintCommand.Subscribe(_ =>
+        {
+            _enjin.MintItem();
+        });
 
         _createCommand = new ReactiveCommand(
             _enjinProp
